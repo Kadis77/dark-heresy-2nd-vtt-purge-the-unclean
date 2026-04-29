@@ -36,7 +36,8 @@ import { DarkHeresyForceFieldSheet } from './sheets/item/force-field-sheet.mjs';
 import { checkAndMigrateWorld } from './dark-heresy-migrations.mjs';
 import { DHTourMain } from './tours/main-tour.mjs';
 
-import * as documents from './documents/_module.mjs'
+import * as documents from './documents/_module.mjs';
+import * as dataModels from './data/_module.mjs';
 
 export const SYSTEM_ID = 'dark-heresy-2nd';
 
@@ -83,13 +84,47 @@ Enable Debug with: game.dh.debug = true
         CONFIG.Combat.initiative = { formula: '@initiative.base + @initiative.bonus', decimals: 0 };
         CONFIG.MeasuredTemplate.defaults.angle = 30.0;
 
+        // Register TypeDataModels (replaces template.json)
+        CONFIG.Actor.dataModels = {
+            acolyte: dataModels.AcolyteDataModel,
+            npc: dataModels.NpcDataModel,
+            vehicle: dataModels.VehicleDataModel,
+        };
+        CONFIG.Item.dataModels = {
+            ammunition: dataModels.AmmunitionDataModel,
+            aptitude: dataModels.SimpleDescriptionDataModel,
+            armour: dataModels.ArmourDataModel,
+            armourModification: dataModels.ArmourModificationDataModel,
+            attackSpecial: dataModels.AttackSpecialDataModel,
+            backpack: dataModels.SimpleDescriptionDataModel,
+            consumable: dataModels.ConsumableDataModel,
+            criticalInjury: dataModels.CriticalInjuryDataModel,
+            cybernetic: dataModels.CyberneticDataModel,
+            drug: dataModels.ConsumableDataModel,
+            enemy: dataModels.EnemyDataModel,
+            forceField: dataModels.ForceFieldItemDataModel,
+            gear: dataModels.ConsumableDataModel,
+            journalEntry: dataModels.JournalEntryDataModel,
+            malignancy: dataModels.SimpleDescriptionDataModel,
+            mentalDisorder: dataModels.SimpleDescriptionDataModel,
+            mutation: dataModels.SimpleDescriptionDataModel,
+            peer: dataModels.EnemyDataModel,
+            psychicPower: dataModels.PsychicPowerDataModel,
+            specialAbility: dataModels.SpecialAbilityDataModel,
+            storageLocation: dataModels.StorageLocationDataModel,
+            talent: dataModels.TalentDataModel,
+            tool: dataModels.ConsumableDataModel,
+            trait: dataModels.TraitDataModel,
+            weapon: dataModels.WeaponDataModel,
+            weaponModification: dataModels.WeaponModificationDataModel,
+        };
+
         // Define custom Document classes
         CONFIG.Actor.documentClass = DarkHeresyActorProxy;
         CONFIG.Actor.documentClasses = {
             acolyte: documents.DarkHeresyAcolyte,
             npc: documents.DarkHeresyNPC,
             vehicle: documents.DarkHeresyVehicle,
-
         };
         CONFIG.Item.documentClass = DarkHeresyItem;
 

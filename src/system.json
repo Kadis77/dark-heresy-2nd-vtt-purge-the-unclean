@@ -5,7 +5,42 @@
   "version": "1.8.1",
   "compatibility": {
     "minimum": 12,
-    "verified": "12.331"
+    "verified": "14"
+  },
+  "documentTypes": {
+    "Actor": {
+      "acolyte": {},
+      "npc": {},
+      "vehicle": {}
+    },
+    "Item": {
+      "ammunition": {},
+      "aptitude": {},
+      "armour": {},
+      "armourModification": {},
+      "attackSpecial": {},
+      "backpack": {},
+      "consumable": {},
+      "criticalInjury": {},
+      "cybernetic": {},
+      "drug": {},
+      "enemy": {},
+      "forceField": {},
+      "gear": {},
+      "journalEntry": {},
+      "malignancy": {},
+      "mentalDisorder": {},
+      "mutation": {},
+      "peer": {},
+      "psychicPower": {},
+      "specialAbility": {},
+      "storageLocation": {},
+      "talent": {},
+      "tool": {},
+      "trait": {},
+      "weapon": {},
+      "weaponModification": {}
+    }
   },
   "authors": [
     {
