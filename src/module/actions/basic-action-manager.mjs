@@ -215,7 +215,7 @@ export class BasicActionManager {
 
     async assignDamageTool() {
         const sourceToken = DHTargetedActionManager.getSourceToken();
-        const sourceActorData = sourceToken ? sourceToken.actor : source;
+        const sourceActorData = sourceToken ? sourceToken.actor : null;
         if(!sourceActorData) return;
 
         const hitData = new Hit();
