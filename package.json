@@ -18,7 +18,6 @@
   "private": true,
   "dependencies": {
     "@typhonjs-fvtt/eslint-config-foundry.js": "0.8.0",
-    "cb": "0.1.0",
     "decode-uri-component": "0.3.0",
     "eslint": "8.27.0",
     "eslint-config-prettier": "8.5.0",
@@ -34,14 +33,14 @@
     "gulp-zip": "5.1.0",
     "js-yaml": "4.1.0",
     "json": "11.0.0",
-    "merge-stream": "2.0.0",
-    "nedb": "1.8.0",
     "path": "0.12.7",
     "prettier": "2.7.1",
     "sass": "1.56.0",
     "semver": "7.5.4",
-    "through2": "4.0.2",
     "underscore": "1.13.6",
     "word-wrap": "1.2.5"
+  },
+  "devDependencies": {
+    "classic-level": "^3.0.0"
   }
 }

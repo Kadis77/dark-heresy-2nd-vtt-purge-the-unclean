@@ -1,10 +1,6 @@
 const gulp = require('gulp');
 const prefix = require('gulp-autoprefixer');
-const through2 = require("through2");
-const yaml = require("js-yaml");
-const Datastore = require("nedb");
-const cb = require("cb");
-const merge = require("merge-stream");
+const { execFileSync } = require("child_process");
 const clean = require("gulp-clean");
 const sourcemaps = require('gulp-sourcemaps');
 const sass = require('gulp-sass')(require('sass'));
@@ -26,43 +22,20 @@ const STATIC_FILES = [
   "src/templates/**/*",
   "src/images/**/*",
   "src/*.json",
-  "src/packs/*.db"
 ];
-const PACK_SRC = "src/packs";
 const BUILD_DIR = "build/dark-heresy-2nd";
 
 /* ----------------------------------------- */
 /*  Compile Packs
 /* ----------------------------------------- */
 
-function compilePacks() {
-  // determine the source folders to process
-  const folders = fs.readdirSync(PACK_SRC).filter((file) => {
-    return fs.statSync(path.join(PACK_SRC, file)).isDirectory();
-  });
-
-  // process each folder into a compendium db
-  const packs = folders.map((folder) => {
-    const db = new Datastore({ filename: path.resolve(__dirname, BUILD_DIR, "packs", `${folder}.db`), autoload: true });
-    return gulp.src(path.join(PACK_SRC, folder, "/**/*.yml")).pipe(
-        through2.obj((file, enc, cb) => {
-          try {
-            const fileContents = file.contents.toString();
-            let json = yaml.loadAll(fileContents);
-            db.insert(json, (err, newDoc) => {
-              if (err) {
-                console.error(`Error inserting into Datastore:`, err);
-              }
-            });
-            cb(null, file);
-          } catch (err) {
-            console.error(`Error processing file ${file.path}:`, err);
-            cb(err, file);
-          }
-        })
-    );
-  });
-  return merge.call(null, packs);
+function compilePacks(cb) {
+  try {
+    execFileSync(process.execPath, [path.resolve(__dirname, "tools/compile-packs.mjs")], { stdio: "inherit" });
+    cb();
+  } catch (err) {
+    cb(err);
+  }
 }
 
 /* ----------------------------------------- */
