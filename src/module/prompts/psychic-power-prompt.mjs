@@ -1,45 +1,30 @@
 import { recursiveUpdate } from '../rolls/roll-helpers.mjs';
-import { PsychicRollData } from '../rolls/roll-data.mjs';
-import { PsychicActionData } from '../rolls/action-data.mjs';
 
-export class PsychicPowerDialog extends FormApplication {
+const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
+
+export class PsychicPowerDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     /**
      * @param psychicAttackData {PsychicActionData}
      */
     constructor(psychicAttackData = {}, options = {}) {
-        super(psychicAttackData.rollData, options);
+        super(options);
         this.psychicAttackData = psychicAttackData;
         this.data = psychicAttackData.rollData;
         this.initialized = false;
     }
 
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            title: 'Psychic Power',
-            id: 'dh-psychic-power-dialog',
-            template: 'systems/dark-heresy-2nd/templates/prompt/psychic-power-roll-prompt.hbs',
-            width: 500,
-            closeOnSubmit: false,
-            submitOnChange: true,
-            classes: ['dialog'],
-        });
-    }
+    static DEFAULT_OPTIONS = {
+        id: 'dh-psychic-power-dialog',
+        classes: ['dialog'],
+        position: { width: 500 },
+        window: { title: 'Psychic Power' },
+    };
 
-    activateListeners(html) {
-        super.activateListeners(html);
-        html.find('.power-select').change(async (ev) => await this._updatePower(ev));
-        html.find('#power-roll').click(async (ev) => await this._rollPower(ev));
-        html.find('#power-cancel').click(async (ev) => await this._cancelPower(ev));
-    }
+    static PARTS = {
+        body: { template: 'systems/dark-heresy-2nd/templates/prompt/psychic-power-roll-prompt.hbs' },
+    };
 
-    async _updatePower(event) {
-        this.data.selectPower(event.target.name);
-        await this.data.update();
-        this.render(true);
-    }
-
-    async getData() {
-        // Initial Values
+    async _prepareContext(options) {
         if (!this.initialized) {
             this.data.initialize();
             this.initialized = true;
@@ -48,11 +33,30 @@ export class PsychicPowerDialog extends FormApplication {
         return this.data;
     }
 
-    async _updateObject(event, formData) {
-        game.dh.log('_updateObject', { event, formData });
-        recursiveUpdate(this.data, formData);
+    _onRender(context, options) {
+        super._onRender(context, options);
+
+        const form = this.element.querySelector('form');
+        if (form) {
+            form.addEventListener('change', async (ev) => {
+                if (ev.target.classList.contains('power-select')) return;
+                const formData = new FormDataExtended(form).object;
+                recursiveUpdate(this.data, formData);
+                await this.data.update();
+                this.render();
+            });
+        }
+
+        this.element.querySelectorAll('.power-select').forEach(el =>
+            el.addEventListener('change', async (ev) => await this._updatePower(ev)));
+        this.element.querySelector('#power-roll')?.addEventListener('click', async (ev) => await this._rollPower(ev));
+        this.element.querySelector('#power-cancel')?.addEventListener('click', async (ev) => await this._cancelPower(ev));
+    }
+
+    async _updatePower(event) {
+        this.data.selectPower(event.target.name);
         await this.data.update();
-        this.render(true);
+        this.render();
     }
 
     async _cancelPower(event) {

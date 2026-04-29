@@ -1,15 +1,14 @@
 import { DarkHeresyItemContainerSheet } from './item-container-sheet.mjs';
 
 export class DarkHeresyArmourSheet extends DarkHeresyItemContainerSheet {
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            width: 820,
-            height: 575,
-            tabs: [{ navSelector: '.dh-navigation', contentSelector: '.dh-body', initial: 'stats' }],
-        });
-    }
+    static DEFAULT_OPTIONS = {
+        position: { width: 820, height: 575 },
+        window: { resizable: true },
+        form: { submitOnChange: true, closeOnSubmit: false },
+        tabs: [{ navSelector: '.dh-navigation', contentSelector: '.dh-body', initial: 'stats' }],
+    };
 
-    get template() {
-        return `systems/dark-heresy-2nd/templates/item/item-armour-sheet.hbs`;
-    }
+    static PARTS = {
+        body: { template: 'systems/dark-heresy-2nd/templates/item/item-armour-sheet.hbs' },
+    };
 }

@@ -1,4 +1,3 @@
-import { toggleUIExpanded } from '../../rules/config.mjs';
 import { ActorContainerSheet } from './actor-container-sheet.mjs';
 import { DHBasicActionManager } from '../../actions/basic-action-manager.mjs';
 import { DHTargetedActionManager } from '../../actions/targeted-action-manager.mjs';
@@ -7,64 +6,63 @@ import { AssignDamageData } from '../../rolls/assign-damage-data.mjs';
 import { prepareAssignDamageRoll } from '../../prompts/assign-damage-prompt.mjs';
 
 export class AcolyteSheet extends ActorContainerSheet {
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            width: 1000,
-            height: 750,
-            resizable: true,
-            tabs: [{ navSelector: '.dh-navigation', contentSelector: '.dh-body', initial: 'main' }],
-        });
-    }
+    static DEFAULT_OPTIONS = {
+        classes: ['dark-heresy-2nd', 'sheet', 'actor'],
+        position: { width: 1000, height: 750 },
+        window: { resizable: true },
+        form: { submitOnChange: true, closeOnSubmit: false },
+        tabs: [{ navSelector: '.dh-navigation', contentSelector: '.dh-body', initial: 'main' }],
+    };
 
-    get template() {
-        return `systems/dark-heresy-2nd/templates/actor/actor-acolyte-sheet.hbs`;
-    }
+    static PARTS = {
+        body: { template: 'systems/dark-heresy-2nd/templates/actor/actor-acolyte-sheet.hbs' },
+    };
 
-    getData() {
-        const context = super.getData();
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options);
         context.dh = CONFIG.dh;
         context.effects = this.actor.getEmbeddedCollection('ActiveEffect').contents;
         return context;
     }
 
-    activateListeners(html) {
-        super.activateListeners(html);
-
-        html.find('.roll-characteristic').click(async (ev) => await this._prepareRollCharacteristic(ev));
-        html.find('.roll-skill').click(async (ev) => await this._prepareRollSkill(ev));
-        html.find('.acolyte-homeWorld').change((ev) => this._onHomeworldChange(ev));
-        html.find('.bonus-vocalize').click(async (ev) => await this._onBonusVocalize(ev));
-
-        html.find('.combat-control').click(async (ev) => await this._combatControls(ev));
+    _onRender(context, options) {
+        super._onRender(context, options);
+        this.element.querySelectorAll('.roll-characteristic').forEach(el =>
+            el.addEventListener('click', async (ev) => await this._prepareRollCharacteristic(ev)));
+        this.element.querySelectorAll('.roll-skill').forEach(el =>
+            el.addEventListener('click', async (ev) => await this._prepareRollSkill(ev)));
+        this.element.querySelectorAll('.acolyte-homeWorld').forEach(el =>
+            el.addEventListener('change', async (ev) => await this._onHomeworldChange(ev)));
+        this.element.querySelectorAll('.bonus-vocalize').forEach(el =>
+            el.addEventListener('click', async (ev) => await this._onBonusVocalize(ev)));
+        this.element.querySelectorAll('.combat-control').forEach(el =>
+            el.addEventListener('click', async (ev) => await this._combatControls(ev)));
     }
 
     async _combatControls(event) {
-        event.preventDefault();
-        const target = event.currentTarget;
-
-        switch(target.dataset.action) {
+        switch (event.currentTarget.dataset.action) {
             case 'attack':
                 await DHTargetedActionManager.performWeaponAttack(this.actor);
                 break;
-            case 'assign-damage':
+            case 'assign-damage': {
                 const hitData = new Hit();
                 const assignData = new AssignDamageData(this.actor, hitData);
                 await prepareAssignDamageRoll(assignData);
                 break;
+            }
             case 'dodge':
                 await this.actor.rollSkill('dodge');
                 break;
             case 'parry':
                 await this.actor.rollSkill('parry');
                 break;
-
         }
     }
 
     async _onBonusVocalize(event) {
-        event.preventDefault();
-        const div = $(event.currentTarget);
-        let bonus = this.actor.backgroundEffects.abilities.find((a) => a.name === div.data('bonusName'));
+        const bonus = this.actor.backgroundEffects.abilities.find(
+            (a) => a.name === event.currentTarget.dataset.bonusName
+        );
         if (bonus) {
             await DHBasicActionManager.sendItemVocalizeChat({
                 actor: this.actor.name,
@@ -76,42 +74,31 @@ export class AcolyteSheet extends ActorContainerSheet {
     }
 
     async _prepareRollCharacteristic(event) {
-        event.preventDefault();
-        const characteristicName = $(event.currentTarget).data('characteristic');
-        await this.actor.rollCharacteristic(characteristicName);
+        await this.actor.rollCharacteristic(event.currentTarget.dataset.characteristic);
     }
 
     async _prepareRollSkill(event) {
-        event.preventDefault();
-        const skillName = $(event.currentTarget).data('skill');
-        const specialtyName = $(event.currentTarget).data('specialty');
-        await this.actor.rollSkill(skillName, specialtyName);
+        const el = event.currentTarget;
+        await this.actor.rollSkill(el.dataset.skill, el.dataset.specialty);
     }
 
-    _onHomeworldChange(event) {
-        event.preventDefault();
-        Dialog.confirm({
-            title: 'Roll Characteristics?',
+    async _onHomeworldChange() {
+        const confirmed = await foundry.applications.api.DialogV2.confirm({
+            window: { title: 'Roll Characteristics?' },
             content: '<p>Would you like to roll Wounds and Fate for this homeworld?</p>',
-            yes: async () => {
-                // Something is probably wrong -- we will skip this
-                if(!this.actor.backgroundEffects?.homeworld) return;
-
-                // Roll Wounds
-                let woundRoll = new Roll(this.actor.backgroundEffects.homeworld.wounds);
-                await woundRoll.evaluate();
-                this.actor.wounds.max = woundRoll.total;
-
-                // Roll Fate
-                let fateRoll = new Roll('1d10');
-                await fateRoll.evaluate();
-                this.actor.fate.max =
-                    parseInt(this.actor.backgroundEffects.homeworld.fate_threshold) +
-                    (fateRoll.total >= this.actor.backgroundEffects.homeworld.emperors_blessing ? 1 : 0);
-                this.render(true);
-            },
-            no: () => {},
-            defaultYes: false,
+            rejectClose: false,
         });
+        if (confirmed) {
+            if (!this.actor.backgroundEffects?.homeworld) return;
+            const woundRoll = new Roll(this.actor.backgroundEffects.homeworld.wounds);
+            await woundRoll.evaluate();
+            const fateRoll = new Roll('1d10');
+            await fateRoll.evaluate();
+            await this.actor.update({
+                'system.wounds.max': woundRoll.total,
+                'system.fate.max': parseInt(this.actor.backgroundEffects.homeworld.fate_threshold) +
+                    (fateRoll.total >= this.actor.backgroundEffects.homeworld.emperors_blessing ? 1 : 0),
+            });
+        }
     }
 }

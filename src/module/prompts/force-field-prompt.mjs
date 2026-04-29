@@ -1,43 +1,46 @@
 import { recursiveUpdate } from '../rolls/roll-helpers.mjs';
-import { WeaponActionData } from '../rolls/action-data.mjs';
 
-export class ForceFieldDialog extends FormApplication {
+const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
+
+export class ForceFieldDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
     constructor(forceFieldData = {}, options = {}) {
-        super(forceFieldData, options);
+        super(options);
         this.data = forceFieldData;
         this.initialized = false;
     }
 
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            title: 'Force Field',
-            id: 'dh-force-field-dialog',
-            template: 'systems/dark-heresy-2nd/templates/prompt/force-field-prompt.hbs',
-            width: 500,
-            closeOnSubmit: false,
-            submitOnChange: true,
-            classes: ['dialog'],
-        });
-    }
+    static DEFAULT_OPTIONS = {
+        id: 'dh-force-field-dialog',
+        classes: ['dialog'],
+        position: { width: 500 },
+        window: { title: 'Force Field' },
+    };
 
-    activateListeners(html) {
-        super.activateListeners(html);
-        html.find('#roll-force-field').click(async (ev) => await this._rollForceField(ev));
-        html.find('#cancel-prompt').click(async (ev) => await this._cancelPrompt(ev));
-    }
+    static PARTS = {
+        body: { template: 'systems/dark-heresy-2nd/templates/prompt/force-field-prompt.hbs' },
+    };
 
-    async getData() {
+    async _prepareContext(options) {
         await this.data.update();
         return this.data;
     }
 
-    async _updateObject(event, formData) {
-        game.dh.log('_updateObject', { event, formData });
-        recursiveUpdate(this.data, formData);
-        game.dh.log('_updateObject complete', { 'data': this.data, formData });
-        await this.data.update();
-        this.render(true);
+    _onRender(context, options) {
+        super._onRender(context, options);
+
+        const form = this.element.querySelector('form');
+        if (form) {
+            form.addEventListener('change', async () => {
+                const formData = new FormDataExtended(form).object;
+                recursiveUpdate(this.data, formData);
+                await this.data.update();
+                this.render();
+            });
+        }
+
+        this.element.querySelector('#roll-force-field')?.addEventListener('click', async (ev) => await this._rollForceField(ev));
+        this.element.querySelector('#cancel-prompt')?.addEventListener('click', async (ev) => await this._cancelPrompt(ev));
     }
 
     async _cancelPrompt(event) {
@@ -45,12 +48,12 @@ export class ForceFieldDialog extends FormApplication {
     }
 
     async _rollForceField(event) {
-        if(!this.data.forceField.system.activated) {
+        if (!this.data.forceField.system.activated) {
             ui.notifications.warn(`Force Field not activated!`);
             return;
         }
 
-        if(this.data.forceField.system.overloaded) {
+        if (this.data.forceField.system.overloaded) {
             ui.notifications.warn(`Force Field currently overloaded!`);
             return;
         }

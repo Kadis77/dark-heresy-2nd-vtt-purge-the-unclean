@@ -1,82 +1,76 @@
 import { toggleUIExpanded } from '../../rules/config.mjs';
 
-export class DarkHeresyItemSheet extends ItemSheet {
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            width: 650,
-            height: 500,
-            tabs: [{ navSelector: '.dh-navigation', contentSelector: '.dh-body', initial: 'description' }],
-        });
-    }
+/**
+ * Base item sheet. Migrated from ItemSheet (ApplicationV1) to ItemSheetV2 (ApplicationV2) for Foundry v14.
+ */
+export class DarkHeresyItemSheet extends foundry.applications.sheets.ItemSheetV2 {
+    static DEFAULT_OPTIONS = {
+        position: { width: 650, height: 500 },
+        window: { resizable: true },
+        form: { submitOnChange: true, closeOnSubmit: false },
+        tabs: [{ navSelector: '.dh-navigation', contentSelector: '.dh-body', initial: 'description' }],
+    };
 
-    get template() {
-        return `systems/dark-heresy-2nd/templates/item/item-sheet.hbs`;
-    }
-
-    getData() {
-        const context = super.getData();
-        context.flags = context.item.flags;
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options);
+        context.item = this.item;
+        context.system = this.item.system;
+        context.flags = this.item.flags;
         context.dh = CONFIG.dh;
         context.effects = this.item.getEmbeddedCollection('ActiveEffect').contents;
         return context;
     }
 
-    activateListeners(html) {
-        super.activateListeners(html);
+    _onRender(context, options) {
+        super._onRender(context, options);
         if (!this.isEditable) return;
 
-        html.find('.sheet-control__hide-control').click(async (ev) => await this._sheetControlHideToggle(ev));
-        html.find('.effect-delete').click(async (ev) => await this._effectDelete(ev));
-        html.find('.effect-edit').click(async (ev) => await this._effectEdit(ev));
-        html.find('.effect-create').click(async (ev) => await this._effectCreate(ev));
-        html.find('.effect-enable').click(async (ev) => await this._effectEnable(ev));
-        html.find('.effect-disable').click(async (ev) => await this._effectDisable(ev));
+        this.element.querySelectorAll('.sheet-control__hide-control').forEach(el =>
+            el.addEventListener('click', async (ev) => await this._sheetControlHideToggle(ev)));
+        this.element.querySelectorAll('.effect-delete').forEach(el =>
+            el.addEventListener('click', async (ev) => await this._effectDelete(ev)));
+        this.element.querySelectorAll('.effect-edit').forEach(el =>
+            el.addEventListener('click', async (ev) => await this._effectEdit(ev)));
+        this.element.querySelectorAll('.effect-create').forEach(el =>
+            el.addEventListener('click', async (ev) => await this._effectCreate(ev)));
+        this.element.querySelectorAll('.effect-enable').forEach(el =>
+            el.addEventListener('click', async (ev) => await this._effectEnable(ev)));
+        this.element.querySelectorAll('.effect-disable').forEach(el =>
+            el.addEventListener('click', async (ev) => await this._effectDisable(ev)));
     }
 
     async _sheetControlHideToggle(event) {
-        event.preventDefault();
-        const displayToggle = $(event.currentTarget);
-        $('span', displayToggle).first().toggleClass('active');
-        const target = displayToggle.data('toggle');
-        $('.' + target).toggle();
+        const el = event.currentTarget;
+        el.querySelector('span')?.classList.toggle('active');
+        const target = el.dataset.toggle;
+        this.element.querySelectorAll('.' + target).forEach(targetEl => {
+            targetEl.style.display = targetEl.style.display === 'none' ? '' : 'none';
+        });
         toggleUIExpanded(target);
     }
 
     async _effectDisable(event) {
-        event.preventDefault();
-        const div = $(event.currentTarget);
-        const effect = this.item.effects.get(div.data('effectId'));
-        effect.update({disabled: true});
+        this.item.effects.get(event.currentTarget.dataset.effectId).update({ disabled: true });
     }
 
     async _effectEnable(event) {
-        event.preventDefault();
-        const div = $(event.currentTarget);
-        const effect = this.item.effects.get(div.data('effectId'));
-        effect.update({disabled: false});
+        this.item.effects.get(event.currentTarget.dataset.effectId).update({ disabled: false });
     }
 
     async _effectDelete(event) {
-        event.preventDefault();
-        const div = $(event.currentTarget);
-        const effect = this.item.effects.get(div.data('effectId'));
-        effect.delete();
+        this.item.effects.get(event.currentTarget.dataset.effectId).delete();
     }
 
     async _effectEdit(event) {
-        event.preventDefault();
-        const div = $(event.currentTarget);
-        const effect = this.item.effects.get(div.data('effectId'));
-        effect.sheet.render(true);
+        this.item.effects.get(event.currentTarget.dataset.effectId).sheet.render(true);
     }
 
-    async _effectCreate(event) {
-        event.preventDefault();
+    async _effectCreate() {
         return this.item.createEmbeddedDocuments('ActiveEffect', [{
-            label: 'New Effect',
+            name: 'New Effect',
             icon: 'icons/svg/aura.svg',
             origin: this.item.uuid,
-            disabled: true
-        }], { renderSheet: true })
+            disabled: true,
+        }], { renderSheet: true });
     }
 }
