@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:foundryvtt.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:foundryvtt.wiki)",
+      "Bash(grep:*)",
+      "Bash(npx gulp:*)"
+    ]
+  }
+}

@@ -48,13 +48,13 @@ export async function roll1d100() {
 export async function sendActionDataToChat(actionData) {
     const html = await renderTemplate(actionData.template, actionData);
     let chatData = {
-        user: game.user.id,
+        author: game.user.id,
         rollMode: game.settings.get('core', 'rollMode'),
         content: html,
-        type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+        style: CONST.CHAT_MESSAGE_STYLES.OTHER,
     };
     if (actionData.rollData.roll) {
-        chatData.roll = actionData.rollData.roll;
+        chatData.rolls = [actionData.rollData.roll];
     }
     if (['gmroll', 'blindroll'].includes(chatData.rollMode)) {
         chatData.whisper = ChatMessage.getWhisperRecipients('GM');

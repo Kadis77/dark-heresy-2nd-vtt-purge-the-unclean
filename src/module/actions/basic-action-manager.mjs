@@ -13,13 +13,14 @@ export class BasicActionManager {
 
     initializeHooks() {
         // Add show/hide support for chat messages
+        // html is now a plain HTMLElement in v13+ (not jQuery)
         Hooks.on('renderChatMessage', async (message, html, data) => {
             game.dh.log('renderChatMessage', { message, html, data });
-            html.find('.roll-control__hide-control').click(async (ev) => await this._toggleExpandChatMessage(ev));
-            html.find('.roll-control__refund').click(async (ev) => await this._refundResources(ev));
-            html.find('.roll-control__fate-reroll').click(async (ev) => await this._fateReroll(ev));
-            html.find('.roll-control__assign-damage').click(async (ev) => await this._assignDamage(ev));
-            html.find('.roll-control__apply-damage').click(async (ev) => await this._applyDamage(ev));
+            html.querySelectorAll('.roll-control__hide-control').forEach(el => el.addEventListener('click', async (ev) => await this._toggleExpandChatMessage(ev)));
+            html.querySelectorAll('.roll-control__refund').forEach(el => el.addEventListener('click', async (ev) => await this._refundResources(ev)));
+            html.querySelectorAll('.roll-control__fate-reroll').forEach(el => el.addEventListener('click', async (ev) => await this._fateReroll(ev)));
+            html.querySelectorAll('.roll-control__assign-damage').forEach(el => el.addEventListener('click', async (ev) => await this._assignDamage(ev)));
+            html.querySelectorAll('.roll-control__apply-damage').forEach(el => el.addEventListener('click', async (ev) => await this._applyDamage(ev)));
         });
 
         // Initialize Scene Control Buttons
@@ -39,16 +40,17 @@ export class BasicActionManager {
     async _toggleExpandChatMessage(event) {
         game.dh.log('roll-control-toggle');
         event.preventDefault();
-        const displayToggle = $(event.currentTarget);
-        $('span', displayToggle).toggleClass('active');
-        const target = displayToggle.data('toggle');
-        $('#' + target).toggle();
+        const displayToggle = event.currentTarget;
+        displayToggle.querySelector('span')?.classList.toggle('active');
+        const target = displayToggle.dataset.toggle;
+        const targetEl = document.getElementById(target);
+        if (targetEl) targetEl.style.display = targetEl.style.display === 'none' ? '' : 'none';
     }
 
     async _refundResources(event) {
         event.preventDefault();
-        const div = $(event.currentTarget);
-        const rollId = div.data('rollId');
+        const div = event.currentTarget;
+        const rollId = div.dataset.rollId;
         const actionData = this.getActionData(rollId);
 
         if (!actionData) {
@@ -56,22 +58,21 @@ export class BasicActionManager {
             return;
         }
 
-        Dialog.confirm({
-            title: 'Confirm Refund',
+        const confirmed = await foundry.applications.api.DialogV2.confirm({
+            window: { title: 'Confirm Refund' },
             content: '<p>Are you sure you would like to refund ammo, fate, etc for this action?</p>',
-            yes: async () => {
-                await actionData.refundResources();
-                ui.notifications.info(`Resources refunded`);
-            },
-            no: () => {},
-            defaultYes: false,
+            rejectClose: false,
         });
+        if (confirmed) {
+            await actionData.refundResources();
+            ui.notifications.info(`Resources refunded`);
+        }
     }
 
     async _fateReroll(event) {
         event.preventDefault();
-        const div = $(event.currentTarget);
-        const rollId = div.data('rollId');
+        const div = event.currentTarget;
+        const rollId = div.dataset.rollId;
         const actionData = this.getActionData(rollId);
 
         if (!actionData) {
@@ -84,35 +85,34 @@ export class BasicActionManager {
             return;
         }
 
-        Dialog.confirm({
-            title: 'Confirm Re-Roll',
+        const confirmed = await foundry.applications.api.DialogV2.confirm({
+            window: { title: 'Confirm Re-Roll' },
             content: '<p>Are you sure you would like to use a fate point to re-roll action?</p>',
-            yes: async () => {
-                // Generate new ID for action data
-                actionData.id = uuid();
-                // Use a FP
-                await actionData.rollData.sourceActor.spendFate();
-                // Refund Initial Resources
-                await actionData.refundResources();
-                // Reset
-                actionData.reset();
-                // Run it back
-                await actionData.performActionAndSendToChat();
-            },
-            no: () => {},
-            defaultYes: false,
+            rejectClose: false,
         });
+        if (confirmed) {
+            // Generate new ID for action data
+            actionData.id = uuid();
+            // Use a FP
+            await actionData.rollData.sourceActor.spendFate();
+            // Refund Initial Resources
+            await actionData.refundResources();
+            // Reset
+            actionData.reset();
+            // Run it back
+            await actionData.performActionAndSendToChat();
+        }
     }
 
     async _assignDamage(event) {
         event.preventDefault();
-        const div = $(event.currentTarget);
+        const div = event.currentTarget;
 
-        const location = div.data('location');
-        const totalDamage = div.data('totalDamage');
-        const totalPenetration = div.data('totalPenetration');
-        const totalFatigue = div.data('totalFatigue');
-        const damageType = div.data('damageType');
+        const location = div.dataset.location;
+        const totalDamage = div.dataset.totalDamage;
+        const totalPenetration = div.dataset.totalPenetration;
+        const totalFatigue = div.dataset.totalFatigue;
+        const damageType = div.dataset.damageType;
 
         const hitData = new Hit();
         hitData.location = location;
@@ -121,7 +121,7 @@ export class BasicActionManager {
         hitData.totalFatigue = totalFatigue;
         hitData.damageType = damageType;
 
-        const targetUuid = div.data('targetUuid');
+        const targetUuid = div.dataset.targetUuid;
 
         let targetActor;
         if (targetUuid) {
@@ -147,15 +147,14 @@ export class BasicActionManager {
 
     async _applyDamage(event) {
         event.preventDefault();
-        const div = $(event.currentTarget);
-        console.log(div);
-        const uuid = div.data('uuid');
-        const damageType = div.data('type');
-        const ignoreArmour = div.data('ignoreArmour');
-        const location = div.data('location');
-        const damage = div.data('damage');
-        const penetration = div.data('penetration');
-        const fatigue = div.data('fatigue');
+        const div = event.currentTarget;
+        const uuid = div.dataset.uuid;
+        const damageType = div.dataset.type;
+        const ignoreArmour = div.dataset.ignoreArmour;
+        const location = div.dataset.location;
+        const damage = div.dataset.damage;
+        const penetration = div.dataset.penetration;
+        const fatigue = div.dataset.fatigue;
 
         const actor = (await fromUuid(uuid)).actor;
         if (!actor) {
@@ -227,10 +226,10 @@ export class BasicActionManager {
     async sendItemVocalizeChat(data) {
         const html = await renderTemplate('systems/dark-heresy-2nd/templates/chat/item-vocalize-chat.hbs', data);
         let chatData = {
-            user: game.user.id,
+            author: game.user.id,
             content: html,
             rollMode: game.settings.get('core', 'rollMode'),
-            type: CONST.CHAT_MESSAGE_TYPES.IC,
+            style: CONST.CHAT_MESSAGE_STYLES.IC,
         };
         if (['gmroll', 'blindroll'].includes(chatData.rollMode)) {
             chatData.whisper = ChatMessage.getWhisperRecipients('GM');
