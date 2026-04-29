@@ -12,45 +12,67 @@ export class BasicActionManager {
     storedRolls = {};
 
     initializeHooks() {
-        // Add show/hide support for chat messages
-        // html is now a plain HTMLElement in v13+ (not jQuery)
-        Hooks.on('renderChatMessage', async (message, html, data) => {
-            game.dh.log('renderChatMessage', { message, html, data });
-            html.querySelectorAll('.roll-control__hide-control').forEach(el => el.addEventListener('click', async (ev) => await this._toggleExpandChatMessage(ev)));
-            html.querySelectorAll('.roll-control__refund').forEach(el => el.addEventListener('click', async (ev) => await this._refundResources(ev)));
-            html.querySelectorAll('.roll-control__fate-reroll').forEach(el => el.addEventListener('click', async (ev) => await this._fateReroll(ev)));
-            html.querySelectorAll('.roll-control__assign-damage').forEach(el => el.addEventListener('click', async (ev) => await this._assignDamage(ev)));
-            html.querySelectorAll('.roll-control__apply-damage').forEach(el => el.addEventListener('click', async (ev) => await this._applyDamage(ev)));
+        // Use event delegation on document for chat message controls.
+        // In v13+ the renderChatMessage hook passes a pre-insertion element;
+        // ApplicationV2 may clone it before inserting, orphaning any bound listeners.
+        // Delegation from document fires on the live DOM and is always reliable.
+        Hooks.on('ready', () => {
+            document.addEventListener('click', async (ev) => {
+                const hideControl = ev.target.closest('.roll-control__hide-control');
+                if (hideControl) { ev.preventDefault(); return this._toggleExpandChatMessage(hideControl); }
+
+                const refundControl = ev.target.closest('.roll-control__refund');
+                if (refundControl) { ev.preventDefault(); return this._refundResources(refundControl); }
+
+                const rerollControl = ev.target.closest('.roll-control__fate-reroll');
+                if (rerollControl) { ev.preventDefault(); return this._fateReroll(rerollControl); }
+
+                const assignControl = ev.target.closest('.roll-control__assign-damage');
+                if (assignControl) { ev.preventDefault(); return this._assignDamage(assignControl); }
+
+                const applyControl = ev.target.closest('.roll-control__apply-damage');
+                if (applyControl) { ev.preventDefault(); return this._applyDamage(applyControl); }
+            });
         });
 
         // Initialize Scene Control Buttons
         Hooks.on('getSceneControlButtons', (controls) => {
-            const bar = controls.find((c) => c.name === 'token');
-            bar.tools.push({
-                name: 'Assign Damage',
-                title: 'Assign Damage',
-                icon: 'fas fa-shield',
-                visible: true,
-                onClick: async () => DHBasicActionManager.assignDamageTool(),
-                button: true,
-            });
+            try {
+                // controls may be an array (v12) or object (v13+)
+                const bar = Array.isArray(controls)
+                    ? controls.find((c) => c.name === 'token')
+                    : controls['token'];
+                if (bar) {
+                    bar.tools.push({
+                        name: 'Assign Damage',
+                        title: 'Assign Damage',
+                        icon: 'fas fa-shield',
+                        visible: true,
+                        onClick: async () => DHBasicActionManager.assignDamageTool(),
+                        button: true,
+                    });
+                }
+            } catch (error) {
+                game.dh.log('Unable to add assign damage scene control.', error);
+            }
         });
     }
 
-    async _toggleExpandChatMessage(event) {
+    // Handlers now receive the matched element directly (not the event),
+    // since they are called from event delegation where currentTarget is document.
+
+    async _toggleExpandChatMessage(el) {
         game.dh.log('roll-control-toggle');
-        event.preventDefault();
-        const displayToggle = event.currentTarget;
-        displayToggle.querySelector('span')?.classList.toggle('active');
-        const target = displayToggle.dataset.toggle;
-        const targetEl = document.getElementById(target);
+        el.querySelector('span')?.classList.toggle('active');
+        const target = el.dataset.toggle;
+        // Traverse relative to the containing .dh-roll rather than using
+        // document.getElementById — more reliable inside Foundry's rendering context.
+        const targetEl = el.closest('.dh-roll')?.querySelector(`[id="${target}"]`);
         if (targetEl) targetEl.style.display = targetEl.style.display === 'none' ? '' : 'none';
     }
 
-    async _refundResources(event) {
-        event.preventDefault();
-        const div = event.currentTarget;
-        const rollId = div.dataset.rollId;
+    async _refundResources(el) {
+        const rollId = el.dataset.rollId;
         const actionData = this.getActionData(rollId);
 
         if (!actionData) {
@@ -69,10 +91,8 @@ export class BasicActionManager {
         }
     }
 
-    async _fateReroll(event) {
-        event.preventDefault();
-        const div = event.currentTarget;
-        const rollId = div.dataset.rollId;
+    async _fateReroll(el) {
+        const rollId = el.dataset.rollId;
         const actionData = this.getActionData(rollId);
 
         if (!actionData) {
@@ -104,15 +124,12 @@ export class BasicActionManager {
         }
     }
 
-    async _assignDamage(event) {
-        event.preventDefault();
-        const div = event.currentTarget;
-
-        const location = div.dataset.location;
-        const totalDamage = div.dataset.totalDamage;
-        const totalPenetration = div.dataset.totalPenetration;
-        const totalFatigue = div.dataset.totalFatigue;
-        const damageType = div.dataset.damageType;
+    async _assignDamage(el) {
+        const location = el.dataset.location;
+        const totalDamage = el.dataset.totalDamage;
+        const totalPenetration = el.dataset.totalPenetration;
+        const totalFatigue = el.dataset.totalFatigue;
+        const damageType = el.dataset.damageType;
 
         const hitData = new Hit();
         hitData.location = location;
@@ -121,7 +138,7 @@ export class BasicActionManager {
         hitData.totalFatigue = totalFatigue;
         hitData.damageType = damageType;
 
-        const targetUuid = div.dataset.targetUuid;
+        const targetUuid = el.dataset.targetUuid;
 
         let targetActor;
         if (targetUuid) {
@@ -145,16 +162,14 @@ export class BasicActionManager {
         await prepareAssignDamageRoll(assignData);
     }
 
-    async _applyDamage(event) {
-        event.preventDefault();
-        const div = event.currentTarget;
-        const uuid = div.dataset.uuid;
-        const damageType = div.dataset.type;
-        const ignoreArmour = div.dataset.ignoreArmour;
-        const location = div.dataset.location;
-        const damage = div.dataset.damage;
-        const penetration = div.dataset.penetration;
-        const fatigue = div.dataset.fatigue;
+    async _applyDamage(el) {
+        const uuid = el.dataset.uuid;
+        const damageType = el.dataset.type;
+        const ignoreArmour = el.dataset.ignoreArmour;
+        const location = el.dataset.location;
+        const damage = el.dataset.damage;
+        const penetration = el.dataset.penetration;
+        const fatigue = el.dataset.fatigue;
 
         const actor = (await fromUuid(uuid)).actor;
         if (!actor) {
@@ -162,7 +177,7 @@ export class BasicActionManager {
             return;
         }
         for(const field of [damage, penetration, fatigue]) {
-            if(field && !Number.isInteger(field)) {
+            if(field && isNaN(parseInt(field))) {
                 ui.notifications.warn(`Unable to determine damage/penetration/fatigue to assign.`);
                 return;
             }
