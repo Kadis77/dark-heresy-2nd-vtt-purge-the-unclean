@@ -11,8 +11,9 @@ export class AcolyteSheet extends ActorContainerSheet {
         position: { width: 1000, height: 750 },
         window: { resizable: true },
         form: { submitOnChange: true, closeOnSubmit: false },
-        tabs: [{ navSelector: '.dh-navigation', contentSelector: '.dh-body', initial: 'main' }],
     };
+
+    tabGroups = { primary: 'main' };
 
     static PARTS = {
         body: { template: 'systems/dark-heresy-2nd/templates/actor/actor-acolyte-sheet.hbs' },

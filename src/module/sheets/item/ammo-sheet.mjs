@@ -5,7 +5,7 @@ export class DarkHeresyAmmoSheet extends DarkHeresyItemContainerSheet {
         position: { width: 820, height: 575 },
         window: { resizable: true },
         form: { submitOnChange: true, closeOnSubmit: false },
-        tabs: [{ navSelector: '.dh-navigation', contentSelector: '.dh-body', initial: 'stats' }],
+
     };
 
     static PARTS = {

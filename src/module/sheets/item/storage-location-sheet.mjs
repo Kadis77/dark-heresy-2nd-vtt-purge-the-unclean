@@ -5,8 +5,9 @@ export class DarkHeresyStorageLocationSheet extends DarkHeresyItemContainerSheet
         position: { width: 800, height: 400 },
         window: { resizable: true },
         form: { submitOnChange: true, closeOnSubmit: false },
-        tabs: [{ navSelector: '.dh-navigation', contentSelector: '.dh-body', initial: 'items' }],
     };
+
+    tabGroups = { primary: 'items' };
 
     static PARTS = {
         body: { template: 'systems/dark-heresy-2nd/templates/item/item-storage-location-sheet.hbs' },

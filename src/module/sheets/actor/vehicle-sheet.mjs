@@ -6,7 +6,6 @@ export class VehicleSheet extends ActorContainerSheet {
         position: { width: 1000, height: 750 },
         window: { resizable: true },
         form: { submitOnChange: true, closeOnSubmit: false },
-        tabs: [{ navSelector: '.dh-navigation', contentSelector: '.dh-body', initial: 'main' }],
     };
 
     static PARTS = {

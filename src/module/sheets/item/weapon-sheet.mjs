@@ -5,8 +5,9 @@ export class DarkHeresyWeaponSheet extends DarkHeresyItemContainerSheet {
         position: { width: 820, height: 575 },
         window: { resizable: true },
         form: { submitOnChange: true, closeOnSubmit: false },
-        tabs: [{ navSelector: '.dh-navigation', contentSelector: '.dh-body', initial: 'stats' }],
     };
+
+    tabGroups = { primary: 'stats' };
 
     static PARTS = {
         body: { template: 'systems/dark-heresy-2nd/templates/item/item-weapon-sheet.hbs' },

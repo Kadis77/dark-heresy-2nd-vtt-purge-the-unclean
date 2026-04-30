@@ -5,7 +5,7 @@ export class DarkHeresyTraitSheet extends DarkHeresyItemSheet {
         position: { width: 650, height: 500 },
         window: { resizable: true },
         form: { submitOnChange: true, closeOnSubmit: false },
-        tabs: [{ navSelector: '.dh-navigation', contentSelector: '.dh-body', initial: 'stats' }],
+
     };
 
     static PARTS = {

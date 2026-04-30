@@ -6,11 +6,15 @@ import { prepareCreateSpecialistSkillPrompt } from '../../prompts/simple-prompt.
  * Shared Actor functions for Actor that contains embedded items.
  * Migrated from ApplicationV1 (ActorSheet) to ApplicationV2 (ActorSheetV2) for Foundry v14.
  */
-export class ActorContainerSheet extends foundry.applications.sheets.ActorSheetV2 {
+export class ActorContainerSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2) {
     static DEFAULT_OPTIONS = {
         form: { submitOnChange: true, closeOnSubmit: false },
         window: { resizable: true },
     };
+
+    get title() {
+        return this.document.name;
+    }
 
     async _prepareContext(options) {
         const context = await super._prepareContext(options);
@@ -19,8 +23,31 @@ export class ActorContainerSheet extends foundry.applications.sheets.ActorSheetV
         return context;
     }
 
+    _activateTabs() {
+        for (const [group, activeTab] of Object.entries(this.tabGroups ?? {})) {
+            const navSelector = `.dh-navigation[data-group="${group}"] [data-tab]`;
+            const contentSelector = `.tab[data-group="${group}"]`;
+            this.element.querySelectorAll(contentSelector).forEach(el =>
+                el.classList.toggle('active', el.dataset.tab === activeTab));
+            this.element.querySelectorAll(navSelector).forEach(el =>
+                el.classList.toggle('active', el.dataset.tab === activeTab));
+            this.element.querySelectorAll(navSelector).forEach(navItem => {
+                navItem.addEventListener('click', (ev) => {
+                    ev.preventDefault();
+                    const tab = ev.currentTarget.dataset.tab;
+                    this.tabGroups[group] = tab;
+                    this.element.querySelectorAll(contentSelector).forEach(el =>
+                        el.classList.toggle('active', el.dataset.tab === tab));
+                    this.element.querySelectorAll(navSelector).forEach(el =>
+                        el.classList.toggle('active', el.dataset.tab === tab));
+                });
+            });
+        }
+    }
+
     _onRender(context, options) {
         super._onRender(context, options);
+        this._activateTabs();
         if (!this.isEditable) return;
 
         // Drop handler on the form/element

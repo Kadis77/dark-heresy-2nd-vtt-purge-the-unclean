@@ -5,7 +5,7 @@ export class DarkHeresyPeerEnemySheet extends DarkHeresyItemSheet {
         position: { width: 800, height: 340 },
         window: { resizable: true },
         form: { submitOnChange: true, closeOnSubmit: false },
-        tabs: [{ navSelector: '.dh-navigation', contentSelector: '.dh-body', initial: 'stats' }],
+
     };
 
     static PARTS = {

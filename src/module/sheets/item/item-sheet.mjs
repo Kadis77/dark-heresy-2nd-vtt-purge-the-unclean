@@ -3,13 +3,14 @@ import { toggleUIExpanded } from '../../rules/config.mjs';
 /**
  * Base item sheet. Migrated from ItemSheet (ApplicationV1) to ItemSheetV2 (ApplicationV2) for Foundry v14.
  */
-export class DarkHeresyItemSheet extends foundry.applications.sheets.ItemSheetV2 {
+export class DarkHeresyItemSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ItemSheetV2) {
     static DEFAULT_OPTIONS = {
         position: { width: 650, height: 500 },
         window: { resizable: true },
         form: { submitOnChange: true, closeOnSubmit: false },
-        tabs: [{ navSelector: '.dh-navigation', contentSelector: '.dh-body', initial: 'description' }],
     };
+
+    tabGroups = { primary: 'description' };
 
     async _prepareContext(options) {
         const context = await super._prepareContext(options);
@@ -21,8 +22,31 @@ export class DarkHeresyItemSheet extends foundry.applications.sheets.ItemSheetV2
         return context;
     }
 
+    _activateTabs() {
+        for (const [group, activeTab] of Object.entries(this.tabGroups ?? {})) {
+            const navSelector = `.dh-navigation[data-group="${group}"] [data-tab]`;
+            const contentSelector = `.tab[data-group="${group}"]`;
+            this.element.querySelectorAll(contentSelector).forEach(el =>
+                el.classList.toggle('active', el.dataset.tab === activeTab));
+            this.element.querySelectorAll(navSelector).forEach(el =>
+                el.classList.toggle('active', el.dataset.tab === activeTab));
+            this.element.querySelectorAll(navSelector).forEach(navItem => {
+                navItem.addEventListener('click', (ev) => {
+                    ev.preventDefault();
+                    const tab = ev.currentTarget.dataset.tab;
+                    this.tabGroups[group] = tab;
+                    this.element.querySelectorAll(contentSelector).forEach(el =>
+                        el.classList.toggle('active', el.dataset.tab === tab));
+                    this.element.querySelectorAll(navSelector).forEach(el =>
+                        el.classList.toggle('active', el.dataset.tab === tab));
+                });
+            });
+        }
+    }
+
     _onRender(context, options) {
         super._onRender(context, options);
+        this._activateTabs();
         if (!this.isEditable) return;
 
         this.element.querySelectorAll('.sheet-control__hide-control').forEach(el =>
