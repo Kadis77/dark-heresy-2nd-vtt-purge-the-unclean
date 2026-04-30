@@ -21,7 +21,7 @@ export class AcolyteSheet extends ActorContainerSheet {
     async _prepareContext(options) {
         const context = await super._prepareContext(options);
         context.dh = CONFIG.dh;
-        context.effects = this.actor.getEmbeddedCollection('ActiveEffect').contents;
+        context.effects = this.actor.effects.contents;
         return context;
     }
 

@@ -17,7 +17,7 @@ export class DarkHeresyItemSheet extends foundry.applications.sheets.ItemSheetV2
         context.system = this.item.system;
         context.flags = this.item.flags;
         context.dh = CONFIG.dh;
-        context.effects = this.item.getEmbeddedCollection('ActiveEffect').contents;
+        context.effects = this.item.effects.contents;
         return context;
     }
 

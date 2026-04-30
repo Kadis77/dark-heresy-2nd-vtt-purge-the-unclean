@@ -129,12 +129,13 @@ Enable Debug with: game.dh.debug = true
         CONFIG.Item.documentClass = DarkHeresyItem;
 
         // Register sheet application classes
-        Actors.unregisterSheet('core', ActorSheet);
+        // Guard against ApplicationV1 globals not existing in Foundry v14+
+        if (typeof ActorSheet !== 'undefined') Actors.unregisterSheet('core', ActorSheet);
         Actors.registerSheet(SYSTEM_ID, AcolyteSheet, {types: ["acolyte"], makeDefault: true });
         Actors.registerSheet(SYSTEM_ID, NpcSheet, {types: ['npc'], makeDefault: true });
         Actors.registerSheet(SYSTEM_ID, VehicleSheet, {types: ['vehicle'], makeDefault: true });
 
-        Items.unregisterSheet('core', ItemSheet);
+        if (typeof ItemSheet !== 'undefined') Items.unregisterSheet('core', ItemSheet);
         Items.registerSheet(SYSTEM_ID, DarkHeresyItemSheet, { makeDefault: true });
         Items.registerSheet(SYSTEM_ID, DarkHeresyAmmoSheet, { types: ['ammunition'], makeDefault: true });
         Items.registerSheet(SYSTEM_ID, DarkHeresyArmourSheet, { types: ['armour'], makeDefault: true });

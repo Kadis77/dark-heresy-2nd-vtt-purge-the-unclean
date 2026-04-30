@@ -29,9 +29,6 @@ export class AcolyteDataModel extends foundry.abstract.TypeDataModel {
             insanity: new f.NumberField({ initial: 0, integer: true }),
             corruption: new f.NumberField({ initial: 0, integer: true }),
             aptitudes: new f.ObjectField(),
-            backgroundEffects: new f.SchemaField({
-                abilities: new f.ArrayField(new f.ObjectField()),
-            }),
         };
     }
 }
