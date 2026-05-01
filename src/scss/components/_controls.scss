@@ -17,6 +17,10 @@
 
     // Settings Cog
     &-control-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.3rem;
         cursor: pointer;
 
         .active {
@@ -28,29 +32,27 @@
         }
 
         &__disabled {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
             cursor: unset;
-            opacity: 1;
+            opacity: 0.4;
             text-decoration: line-through;
         }
 
         &__label {
-            padding-top: 1px;
-            padding-left: 5px;
-            vertical-align: text-top;
-            opacity: .5;
             font-size: 12px;
             line-height: 1;
-            display: inline-grid;
-            white-space: nowrap;
-            word-wrap: normal;
-            -webkit-font-smoothing: antialiased;
+            opacity: 0.8;
         }
 
         &__span {
-            padding-top: 3px;
-            padding-left: 2px;
             @extend .dh-material;
-            opacity: 0.5;
+            font-size: 14px;
+            line-height: 1;
+            padding: 0;
+            opacity: 0.75;
         }
     }
 

@@ -10,6 +10,10 @@ export class DarkHeresyItemSheet extends foundry.applications.api.HandlebarsAppl
         form: { submitOnChange: true, closeOnSubmit: false },
     };
 
+    get title() {
+        return this.item.name;
+    }
+
     tabGroups = { primary: 'description' };
 
     async _prepareContext(options) {
