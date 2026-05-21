@@ -2,12 +2,21 @@ import { DarkHeresyItemContainer } from './item-container.mjs';
 import { capitalize } from '../handlebars/handlebars-helpers.mjs';
 
 export class DarkHeresyItem extends DarkHeresyItemContainer {
-    get totalWeight() {
-        let weight = this.system.weight || 0;
-        if (this.items && this.items.size > 0) {
-            this.items.forEach((item) => (weight += item.totalWeight));
-        }
-        return weight;
+    get isPhysical() {
+        return ['weapon', 'armour', 'ammunition', 'consumable', 'drug', 'gear', 'tool',
+            'cybernetic', 'forceField', 'armourModification', 'weaponModification'].includes(this.type);
+    }
+
+    get isPlacedOnGrid() {
+        return this.system.gridX != null;
+    }
+
+    get isInEncumberedZone() {
+        return this.isPlacedOnGrid && (this.system.gridX + this.system.gridWidth) > 10;
+    }
+
+    get isInCovertZone() {
+        return this.isPlacedOnGrid && (this.system.gridX + this.system.gridWidth) <= 2;
     }
 
     get equipped() {
@@ -124,14 +133,6 @@ export class DarkHeresyItem extends DarkHeresyItemContainer {
 
     get isStorageLocation() {
         return this.type === 'storageLocation';
-    }
-
-    get isBackpack() {
-        return this.type === 'backpack';
-    }
-
-    get isInBackpack() {
-        return this.system.backpack?.inBackpack || false;
     }
 
     get isJournalEntry() {

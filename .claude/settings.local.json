@@ -7,7 +7,16 @@
       "WebFetch(domain:github.com)",
       "WebFetch(domain:foundryvtt.wiki)",
       "Bash(grep:*)",
-      "Bash(npx gulp:*)"
+      "Bash(npx gulp:*)",
+      "Bash(sed -n '55,75p' \"/Applications/Foundry Virtual Tabletop.app/Contents/Resources/app/public/css/foundry2.css\")",
+      "Bash(sed -n '8968,9000p' \"/Applications/Foundry Virtual Tabletop.app/Contents/Resources/app/public/css/foundry2.css\")",
+      "Bash(sed -n '15091,15120p' \"/Applications/Foundry Virtual Tabletop.app/Contents/Resources/app/public/css/foundry2.css\")",
+      "Bash(sed -n '11431,11445p' \"/Applications/Foundry Virtual Tabletop.app/Contents/Resources/app/public/css/foundry2.css\")",
+      "Bash(sed -n '535,570p' \"/Applications/Foundry Virtual Tabletop.app/Contents/Resources/app/public/css/foundry2.css\")",
+      "Bash(sed -n '5895,5930p' \"/Applications/Foundry Virtual Tabletop.app/Contents/Resources/app/public/css/foundry2.css\")",
+      "Bash(git -C /Users/felicityrogers/Documents/GitHub/dark-heresy-2nd-vtt log --oneline -20)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('styles:', d.get\\('styles',[]\\)\\); print\\('colorScheme:', d.get\\('colorScheme','not set'\\)\\); print\\('compatibility:', d.get\\('compatibility',{}\\)\\)\")",
+      "Bash(awk:*)"
     ]
   }
 }

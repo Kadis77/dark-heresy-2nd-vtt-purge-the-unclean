@@ -4,7 +4,7 @@ export class DarkHeresyTraitSheet extends DarkHeresyItemSheet {
     static DEFAULT_OPTIONS = {
         position: { width: 650, height: 500 },
         window: { resizable: true },
-        form: { submitOnChange: true, closeOnSubmit: false },
+        form: { closeOnSubmit: false },
 
     };
 

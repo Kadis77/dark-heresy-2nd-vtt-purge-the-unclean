@@ -178,6 +178,8 @@ export function registerHandlebarsHelpers() {
             .join(', ');
     });
 
+    Handlebars.registerHelper('add1', (n) => parseInt(n) + 1);
+
     Handlebars.registerHelper('damageTypeLong', function(damageType) {
         damageType = (damageType || 'i').toLowerCase();
         switch (damageType) {

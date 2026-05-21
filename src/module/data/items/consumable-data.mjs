@@ -1,4 +1,4 @@
-import { physicalItemFields, itemDescriptionFields, actionFields, backpackItemFields } from '../common/item-fields.mjs';
+import { physicalItemFields, itemDescriptionFields, actionFields } from '../common/item-fields.mjs';
 
 /** Used by: consumable, drug, tool, gear */
 export class ConsumableDataModel extends foundry.abstract.TypeDataModel {
@@ -7,7 +7,6 @@ export class ConsumableDataModel extends foundry.abstract.TypeDataModel {
             ...physicalItemFields(),
             ...itemDescriptionFields(),
             ...actionFields(),
-            ...backpackItemFields(),
         };
     }
 }

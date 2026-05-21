@@ -1,4 +1,4 @@
-import { physicalItemFields, itemDescriptionFields, actionFields, backpackItemFields } from '../common/item-fields.mjs';
+import { physicalItemFields, itemDescriptionFields, actionFields } from '../common/item-fields.mjs';
 
 export class ForceFieldItemDataModel extends foundry.abstract.TypeDataModel {
     static defineSchema() {
@@ -7,7 +7,6 @@ export class ForceFieldItemDataModel extends foundry.abstract.TypeDataModel {
             ...physicalItemFields(),
             ...itemDescriptionFields(),
             ...actionFields(),
-            ...backpackItemFields(),
             protectionRating: new f.NumberField({ initial: 0, integer: true }),
             activated: new f.BooleanField({ initial: false }),
             overloaded: new f.BooleanField({ initial: false }),

@@ -1,0 +1,127 @@
+$cell-size: 40px;
+
+.dh-carry-grid-panel {
+    grid-column: 1 / -1;
+}
+
+.dh-carry-grid-zone-headers {
+    display: grid;
+    grid-template-columns: repeat(15, $cell-size);
+    margin-bottom: 2px;
+
+    .zone-label {
+        text-align: center;
+        font-size: 10px;
+        font-weight: bold;
+        padding: 2px 0;
+    }
+    .zone-label--covert     { grid-column: 1 / span 2;  color: #1a7a4a; background: rgba(#2a8, 0.15); }
+    .zone-label--normal     { grid-column: 3 / span 8;  color: #555; }
+    .zone-label--encumbered { grid-column: 11 / span 5; color: #8a2222; background: rgba(#a22, 0.15); }
+}
+
+.dh-carry-grid {
+    display: grid;
+    grid-template-columns: repeat(15, $cell-size);
+    border: 1px solid #555;
+    overflow-y: auto;
+    max-height: 480px;
+
+    // Grid lines via repeating gradients
+    background-image:
+        repeating-linear-gradient(to right, #bbb 0, #bbb 1px, transparent 1px, transparent $cell-size),
+        repeating-linear-gradient(to bottom, #bbb 0, #bbb 1px, transparent 1px, transparent $cell-size);
+    background-color: #f5f5f0;
+
+    .zone-bg {
+        grid-row: 1 / -1;
+        pointer-events: none;
+        z-index: 0;
+
+        &.zone-covert     { grid-column: 1 / span 2;  background: rgba(#2a8, 0.12); border-right: 2px solid rgba(#1a7a4a, 0.4); }
+        &.zone-encumbered { grid-column: 11 / span 5; background: rgba(#a22, 0.12); border-left: 2px solid rgba(#8a2222, 0.4); }
+    }
+
+    .grid-item {
+        z-index: 2;
+        border: 1px solid rgba(#000, 0.5);
+        border-radius: 2px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        line-height: 1.2;
+        text-align: center;
+        cursor: grab;
+        user-select: none;
+        padding: 2px;
+        word-break: break-word;
+        hyphens: auto;
+
+        &:hover { filter: brightness(1.15); }
+        &:active { cursor: grabbing; }
+
+        // Container items render beneath regular items
+        &.grid-item--container {
+            z-index: 1;
+            background: rgba(#8a7060, 0.55);
+            border: 2px dashed rgba(#000, 0.4);
+            color: #fff;
+        }
+
+        // Item type colours
+        &.grid-item--weapon          { background: rgba(#8b1a1a, 0.85); color: #fff; }
+        &.grid-item--armour          { background: rgba(#1a3a8b, 0.85); color: #fff; }
+        &.grid-item--ammunition      { background: rgba(#7a5500, 0.85); color: #fff; }
+        &.grid-item--cybernetic      { background: rgba(#5a1a8b, 0.85); color: #fff; }
+        &.grid-item--forceField      { background: rgba(#1a6a7a, 0.85); color: #fff; }
+        &.grid-item--armourModification,
+        &.grid-item--weaponModification { background: rgba(#3a3a3a, 0.75); color: #fff; }
+        &.grid-item--gear,
+        &.grid-item--consumable,
+        &.grid-item--drug,
+        &.grid-item--tool            { background: rgba(#1a6a1a, 0.85); color: #fff; }
+
+        &.dragging { opacity: 0.35; }
+    }
+
+    &.drag-over-valid   { outline: 2px solid #00cc44; }
+    &.drag-over-invalid { outline: 2px solid #cc0000; }
+}
+
+.dh-carry-grid-unplaced {
+    margin-top: 6px;
+    border-top: 1px solid #ccc;
+    padding-top: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+
+    .dh-field__header {
+        width: 100%;
+        margin-bottom: 2px;
+    }
+
+    .unplaced-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: #e0e0d8;
+        border: 1px solid #999;
+        border-radius: 3px;
+        padding: 3px 7px;
+        font-size: 11px;
+        cursor: grab;
+
+        &:hover { background: #d0d0c8; }
+        &:active { cursor: grabbing; }
+
+        .size-hint {
+            color: #666;
+            font-size: 10px;
+            font-style: italic;
+        }
+    }
+}

@@ -9,6 +9,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 2
+    gridWidth: 1
     modifications: []
     penetration: 4
     range: 30
@@ -37,6 +39,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 4
     range: 100
@@ -65,6 +69,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 2
+    gridWidth: 1
     modifications: []
     penetration: 4
     range: 40
@@ -94,6 +100,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 4
     range: 90
@@ -123,6 +131,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 5
+    gridWidth: 2
     modifications: []
     penetration: 5
     range: 140
@@ -152,6 +162,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 4
     range: 80
@@ -182,6 +194,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 5
+    gridWidth: 2
     modifications: []
     penetration: 5
     range: 150
@@ -210,6 +224,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 5
+    gridWidth: 2
     modifications: []
     penetration: 5
     range: 120
@@ -240,6 +256,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 4
     range: 90
@@ -269,6 +287,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 2
     modifications: []
     penetration: 2
     range: 0
@@ -298,6 +318,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 1
     range: 0
@@ -326,6 +348,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 2
     modifications: []
     penetration: 2
     range: 0
@@ -355,6 +379,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 9
     range: 0
@@ -386,6 +412,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 2
     range: 100
@@ -415,6 +443,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 2
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 3
@@ -442,6 +472,8 @@ data:
     damageType: R
     description: ''
     equipped: false
+    gridHeight: 2
+    gridWidth: 1
     modifications: []
     penetration: 2
     range: 30
@@ -471,6 +503,8 @@ data:
     damageType: E
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 6
     range: 0
@@ -501,6 +535,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 2
+    gridWidth: 1
     modifications: []
     penetration: 6
     range: 15
@@ -530,6 +566,8 @@ data:
     damageType: I
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 1
     range: 0
@@ -560,6 +598,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 8
     range: 30
@@ -589,6 +629,8 @@ data:
     damageType: I
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 7
     range: 0
@@ -618,6 +660,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 4
     range: 300
@@ -646,6 +690,8 @@ data:
     damageType: I
     description: ''
     equipped: false
+    gridHeight: 5
+    gridWidth: 2
     modifications: []
     penetration: 8
     range: 100
@@ -676,6 +722,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 2
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 30
@@ -706,6 +754,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 180
@@ -736,6 +786,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 50
@@ -764,6 +816,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 120
@@ -791,6 +845,8 @@ data:
     damageType: I
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 1
     range: 0
@@ -819,6 +875,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 5
+    gridWidth: 2
     modifications: []
     penetration: 0
     range: 60
@@ -850,6 +908,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 2
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 30
@@ -878,6 +938,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 50
@@ -907,6 +969,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -936,6 +1000,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 12
     range: 0
@@ -966,6 +1032,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 3
     range: 0
@@ -995,6 +1063,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 5
+    gridWidth: 2
     modifications: []
     penetration: 3
     range: 30
@@ -1025,6 +1095,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 2
     range: 0
@@ -1054,6 +1126,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 2
     range: 20
@@ -1083,6 +1157,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 2
     range: 20
@@ -1115,6 +1191,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 2
+    gridWidth: 1
     modifications: []
     penetration: 2
     range: 10
@@ -1144,6 +1222,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 5
+    gridWidth: 2
     modifications: []
     penetration: 4
     range: 30
@@ -1173,6 +1253,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 2
     range: 8
@@ -1203,6 +1285,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 6
     range: 30
@@ -1233,6 +1317,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 4
     range: 0
@@ -1264,6 +1350,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -1293,6 +1381,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 2
     modifications: []
     penetration: 2
     range: 0
@@ -1322,6 +1412,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 2
     modifications: []
     penetration: 2
     range: 0
@@ -1351,6 +1443,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 8
     range: 0
@@ -1382,6 +1476,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 4
     range: 0
@@ -1414,6 +1510,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 6
     range: 0
@@ -1445,6 +1543,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -1475,6 +1575,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 4
     range: 0
@@ -1505,6 +1607,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 2
     range: 0
@@ -1535,6 +1639,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -1563,6 +1669,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -1591,6 +1699,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -1619,6 +1729,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 2
     range: 0
@@ -1647,6 +1759,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -1676,6 +1790,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -1704,6 +1820,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 6
     range: 0
@@ -1732,6 +1850,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 8
     range: 0
@@ -1761,6 +1881,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -1789,6 +1911,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -1818,6 +1942,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -1847,6 +1973,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -1876,6 +2004,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -1904,6 +2034,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -1932,6 +2064,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -1960,6 +2094,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -1989,6 +2125,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -2018,6 +2156,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -2047,6 +2187,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 3
     range: 0
@@ -2079,6 +2221,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 7
     range: 60
@@ -2106,6 +2250,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 2
+    gridWidth: 1
     modifications: []
     penetration: 7
     range: 20
@@ -2133,6 +2279,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 100
@@ -2161,6 +2309,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 70
@@ -2189,6 +2339,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 2
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 30
@@ -2217,6 +2369,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 1
     range: 150
@@ -2247,6 +2401,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 60
@@ -2274,6 +2430,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 5
+    gridWidth: 2
     modifications: []
     penetration: 0
     range: 300
@@ -2301,6 +2459,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 2
     range: 45
@@ -2331,6 +2491,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 2
     modifications: []
     penetration: 6
     range: 0
@@ -2360,6 +2522,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 10
@@ -2389,6 +2553,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 30
@@ -2418,6 +2584,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 5
+    gridWidth: 2
     modifications: []
     penetration: 1
     range: 70
@@ -2447,6 +2615,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 30
@@ -2475,6 +2645,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 2
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 15
@@ -2503,6 +2675,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 5
+    gridWidth: 2
     modifications: []
     penetration: 2
     range: 200
@@ -2535,6 +2709,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 2
     modifications: []
     penetration: 2
     range: 0
@@ -2566,6 +2742,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 2
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 15
@@ -2596,6 +2774,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 2
     modifications: []
     penetration: 0
     range: 0
@@ -2625,6 +2805,8 @@ data:
     damageType: Explosive
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 2
     modifications: []
     penetration: 7
     range: 0
@@ -2653,6 +2835,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -2682,6 +2866,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -2709,6 +2895,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 5
@@ -2736,6 +2924,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 5
+    gridWidth: 2
     modifications: []
     penetration: 0
     range: 200
@@ -2767,6 +2957,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 2
@@ -2796,6 +2988,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 30
@@ -2826,6 +3020,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -2854,6 +3050,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 2
     modifications: []
     penetration: 0
     range: 0
@@ -2885,6 +3083,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -2913,6 +3113,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 50
@@ -2944,6 +3146,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 2
     modifications: []
     penetration: 0
     range: 0
@@ -2973,6 +3177,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 2
     modifications: []
     penetration: 0
     range: 0
@@ -3003,6 +3209,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 4
     range: 0
@@ -3033,6 +3241,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 2
     modifications: []
     penetration: 0
     range: 0
@@ -3061,6 +3271,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -3089,6 +3301,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -3116,6 +3330,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 4
     range: 6
@@ -3147,6 +3363,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 1
     range: 0
@@ -3177,6 +3395,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 3
@@ -3206,6 +3426,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 2
+    gridWidth: 1
     modifications: []
     penetration: 12
     range: 10
@@ -3234,6 +3456,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 12
     range: 20
@@ -3262,6 +3486,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 6
     range: 90
@@ -3291,6 +3517,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 2
+    gridWidth: 1
     modifications: []
     penetration: 6
     range: 30
@@ -3320,6 +3548,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 3
     range: 120
@@ -3348,6 +3578,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 5
     range: 0
@@ -3376,6 +3608,8 @@ data:
     damageType: E
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 5
     range: 0
@@ -3404,6 +3638,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 10
     range: 0
@@ -3434,6 +3670,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 2
     modifications: []
     penetration: 6
     range: 0
@@ -3464,6 +3702,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 5
     range: 0
@@ -3495,6 +3735,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 2
     modifications: []
     penetration: 7
     range: 0
@@ -3525,6 +3767,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 9
     range: 0
@@ -3554,6 +3798,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 4
     range: 0
@@ -3583,6 +3829,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 2
     range: 0
@@ -3611,6 +3859,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 1
     range: 0
@@ -3640,6 +3890,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 5
     range: 0
@@ -3670,6 +3922,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 2
     modifications: []
     penetration: 5
     range: 0
@@ -3699,6 +3953,8 @@ data:
     damageType: Energy
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 10
     range: 0
@@ -3729,6 +3985,8 @@ data:
     damageType: Rending
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 2
     modifications: []
     penetration: 0
     range: 0
@@ -3758,6 +4016,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 0
@@ -3786,6 +4046,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 3
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 3
@@ -3815,6 +4077,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 5
+    gridWidth: 2
     modifications: []
     penetration: 6
     range: 300
@@ -3843,6 +4107,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 100
@@ -3870,6 +4136,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 2
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 30
@@ -3897,6 +4165,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 2
+    gridWidth: 1
     modifications: []
     penetration: 2
     range: 35
@@ -3925,6 +4195,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 5
+    gridWidth: 2
     modifications: []
     penetration: 3
     range: 100
@@ -3952,6 +4224,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 30
@@ -3980,6 +4254,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 30
@@ -4008,6 +4284,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 4
+    gridWidth: 1
     modifications: []
     penetration: 3
     range: 200
@@ -4037,6 +4315,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 2
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 30
@@ -4064,6 +4344,8 @@ data:
     damageType: Impact
     description: ''
     equipped: false
+    gridHeight: 2
+    gridWidth: 1
     modifications: []
     penetration: 0
     range: 30

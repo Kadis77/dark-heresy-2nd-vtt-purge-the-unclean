@@ -8,7 +8,7 @@ import { prepareCreateSpecialistSkillPrompt } from '../../prompts/simple-prompt.
  */
 export class ActorContainerSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2) {
     static DEFAULT_OPTIONS = {
-        form: { submitOnChange: true, closeOnSubmit: false },
+        form: { closeOnSubmit: false },
         window: { resizable: true },
     };
 
@@ -50,9 +50,22 @@ export class ActorContainerSheet extends foundry.applications.api.HandlebarsAppl
         this._activateTabs();
         if (!this.isEditable) return;
 
-        // Drop handler on the form/element
+        // Drop handler and form-change persistence on the form/element
         const form = this.element.querySelector('form') ?? this.element;
         form.addEventListener('drop', (ev) => this._onDrop(ev));
+        form.addEventListener('change', async (event) => {
+            const input = event.target;
+            if (!input.name) return;
+            let value;
+            if (input.type === 'checkbox') {
+                value = input.checked;
+            } else if (input.type === 'number' || input.dataset.dtype === 'Number') {
+                value = input.value !== '' ? Number(input.value) : null;
+            } else {
+                value = input.value;
+            }
+            await this.document.update({ [input.name]: value });
+        });
 
         this.element.querySelectorAll('.sheet-control__hide-control').forEach(el =>
             el.addEventListener('click', async (ev) => await this._sheetControlHideToggle(ev)));

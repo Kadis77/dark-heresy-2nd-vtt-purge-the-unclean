@@ -17,6 +17,31 @@
     -webkit-font-smoothing: antialiased;
 }
 
+// ── Foundry v14 global sidebar fixes ────────────────────────────────────────
+// Outside .dh-wrapper so these apply to the Foundry UI, not just sheets.
+// Our system CSS is unlayered and wins over Foundry's @layer rules.
+
+// Sidebar tab icon list: needs explicit flex-column so gap works
+#sidebar-tabs menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+// Sidebar panel background: reinforce so it's never transparent
+#sidebar-content .sidebar-tab {
+    background: var(--sidebar-background, rgba(11, 10, 19, 0.9));
+}
+
+// Sidebar tab strip itself: ensure it stacks vertically and doesn't collapse
+#sidebar-tabs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+
 .dh-wrapper {
     position: relative;
     height: 100%;
@@ -39,6 +64,7 @@
     @import 'src/scss/components/navigation';
     @import 'src/scss/components/settings';
     @import 'src/scss/components/armour';
+    @import 'src/scss/components/carry_grid';
     @import 'src/scss/components/characteristic_roller';
     @import 'src/scss/components/characteristics';
 

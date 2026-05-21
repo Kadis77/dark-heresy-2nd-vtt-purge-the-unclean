@@ -81,14 +81,6 @@ export function creatureActorFields() {
             cost: new f.NumberField({ initial: 0, integer: true }),
             hasFocus: new f.BooleanField({ initial: false }),
         }),
-        backpack: new f.SchemaField({
-            hasBackpack: new f.BooleanField({ initial: false }),
-            name: new f.StringField({ initial: 'Backpack' }),
-            isCombatVest: new f.BooleanField({ initial: false }),
-            weight: new f.SchemaField({
-                max: new f.NumberField({ initial: 30, integer: true }),
-            }),
-        }),
         skills: new f.SchemaField({
             acrobatics: skillField('Acrobatics', ['Ag', 'S'], 'Ag'),
             athletics: skillField('Athletics', ['S', 'T'], 'S'),

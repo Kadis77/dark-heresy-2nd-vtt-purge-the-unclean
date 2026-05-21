@@ -4,7 +4,7 @@ export class DarkHeresyArmourSheet extends DarkHeresyItemContainerSheet {
     static DEFAULT_OPTIONS = {
         position: { width: 820, height: 575 },
         window: { resizable: true },
-        form: { submitOnChange: true, closeOnSubmit: false },
+        form: { closeOnSubmit: false },
     };
 
     tabGroups = { primary: 'stats' };

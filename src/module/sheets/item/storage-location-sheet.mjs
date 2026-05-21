@@ -4,7 +4,7 @@ export class DarkHeresyStorageLocationSheet extends DarkHeresyItemContainerSheet
     static DEFAULT_OPTIONS = {
         position: { width: 800, height: 400 },
         window: { resizable: true },
-        form: { submitOnChange: true, closeOnSubmit: false },
+        form: { closeOnSubmit: false },
     };
 
     tabGroups = { primary: 'items' };

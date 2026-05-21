@@ -1,4 +1,4 @@
-import { physicalItemFields, itemDescriptionFields, damageFields, attackFields, backpackItemFields } from '../common/item-fields.mjs';
+import { physicalItemFields, itemDescriptionFields, damageFields, attackFields } from '../common/item-fields.mjs';
 
 export class WeaponModificationDataModel extends foundry.abstract.TypeDataModel {
     static defineSchema() {
@@ -7,7 +7,6 @@ export class WeaponModificationDataModel extends foundry.abstract.TypeDataModel 
             ...itemDescriptionFields(),
             ...damageFields(),
             ...attackFields(),
-            ...backpackItemFields(),
         };
     }
 }

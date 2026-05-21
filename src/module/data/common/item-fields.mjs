@@ -8,9 +8,12 @@ export function physicalItemFields() {
     return {
         craftsmanship: new f.StringField({ initial: 'common' }),
         availability: new f.StringField({ initial: 'common' }),
-        weight: new f.NumberField({ initial: 0 }),
         equipped: new f.BooleanField({ initial: false }),
-        inBackpack: new f.BooleanField({ initial: false }),
+        gridWidth: new f.NumberField({ initial: 1, integer: true }),
+        gridHeight: new f.NumberField({ initial: 1, integer: true }),
+        gridX: new f.NumberField({ initial: null, integer: true, nullable: true }),
+        gridY: new f.NumberField({ initial: null, integer: true, nullable: true }),
+        isNaturallyCovert: new f.BooleanField({ initial: false }),
     };
 }
 
@@ -69,11 +72,3 @@ export function actionFields() {
     };
 }
 
-export function backpackItemFields() {
-    const f = foundry.data.fields;
-    return {
-        backpack: new f.SchemaField({
-            inBackpack: new f.BooleanField({ initial: false }),
-        }),
-    };
-}

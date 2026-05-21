@@ -5,7 +5,7 @@ export class NpcSheet extends AcolyteSheet {
         classes: ['dark-heresy-2nd', 'sheet', 'actor'],
         position: { width: 1000, height: 750 },
         window: { resizable: true },
-        form: { submitOnChange: true, closeOnSubmit: false },
+        form: { closeOnSubmit: false },
     };
 
     static PARTS = {

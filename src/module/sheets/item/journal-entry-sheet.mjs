@@ -4,7 +4,7 @@ export class DarkHeresyJournalEntrySheet extends DarkHeresyItemSheet {
     static DEFAULT_OPTIONS = {
         position: { width: 800, height: 350 },
         window: { resizable: true },
-        form: { submitOnChange: true, closeOnSubmit: false },
+        form: { closeOnSubmit: false },
 
     };
 

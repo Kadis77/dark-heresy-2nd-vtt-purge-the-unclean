@@ -7,7 +7,7 @@ export class DarkHeresyItemSheet extends foundry.applications.api.HandlebarsAppl
     static DEFAULT_OPTIONS = {
         position: { width: 650, height: 500 },
         window: { resizable: true },
-        form: { submitOnChange: true, closeOnSubmit: false },
+        form: { closeOnSubmit: false },
     };
 
     get title() {
@@ -52,6 +52,21 @@ export class DarkHeresyItemSheet extends foundry.applications.api.HandlebarsAppl
         super._onRender(context, options);
         this._activateTabs();
         if (!this.isEditable) return;
+
+        const form = this.element.querySelector('form') ?? this.element;
+        form.addEventListener('change', async (event) => {
+            const input = event.target;
+            if (!input.name) return;
+            let value;
+            if (input.type === 'checkbox') {
+                value = input.checked;
+            } else if (input.type === 'number' || input.dataset.dtype === 'Number') {
+                value = input.value !== '' ? Number(input.value) : null;
+            } else {
+                value = input.value;
+            }
+            await this.document.update({ [input.name]: value });
+        });
 
         this.element.querySelectorAll('.sheet-control__hide-control').forEach(el =>
             el.addEventListener('click', async (ev) => await this._sheetControlHideToggle(ev)));

@@ -1,0 +1,46 @@
+<div class="dh-panel dh-carry-grid-panel {{#if carryGrid.encumbered}}dh-error{{/if}}">
+    <h1 class="dh-panel__header">
+        Carry Grid ({{carryGrid.strBonus}}S + {{carryGrid.touBonus}}T = {{carryGrid.height}} rows)
+        {{#if carryGrid.encumbered}}<span style="font-size:0.75em; color:#a22;"> — Encumbered: −10 Agility</span>{{/if}}
+    </h1>
+
+    <div class="dh-carry-grid-zone-headers">
+        <div class="zone-label zone-label--covert">Covert (2)</div>
+        <div class="zone-label zone-label--normal">Normal (8)</div>
+        <div class="zone-label zone-label--encumbered">Encumbered (5)</div>
+    </div>
+
+    <div class="dh-carry-grid"
+         data-grid-width="{{carryGrid.width}}"
+         data-grid-height="{{carryGrid.height}}"
+         style="grid-template-rows: repeat({{carryGrid.height}}, 40px);">
+
+        <div class="zone-bg zone-covert"></div>
+        <div class="zone-bg zone-encumbered"></div>
+
+        {{#each carryGridItems}}
+            <div class="grid-item grid-item--{{this.type}}"
+                 data-item-id="{{this.id}}"
+                 draggable="true"
+                 title="{{this.name}} ({{this.gridWidth}}×{{this.gridHeight}})"
+                 style="grid-column: {{this.gridColStart}} / span {{this.gridWidth}}; grid-row: {{this.gridRowStart}} / span {{this.gridHeight}};">
+                <span class="grid-item__name">{{this.name}}</span>
+            </div>
+        {{/each}}
+    </div>
+
+    {{#if unplacedItems.length}}
+    <div class="dh-carry-grid-unplaced">
+        <span class="dh-field__header">Unplaced — drag onto grid to place:</span>
+        {{#each unplacedItems}}
+            <div class="unplaced-item"
+                 data-item-id="{{this.id}}"
+                 draggable="true"
+                 title="{{this.name}} — {{this.gridWidth}}×{{this.gridHeight}} cells">
+                <span>{{this.name}}</span>
+                <span class="size-hint">{{this.gridWidth}}×{{this.gridHeight}}</span>
+            </div>
+        {{/each}}
+    </div>
+    {{/if}}
+</div>

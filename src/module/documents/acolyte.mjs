@@ -18,8 +18,8 @@ import { DarkHeresySettings } from '../dark-heresy-settings.mjs';
 
 export class DarkHeresyAcolyte extends DarkHeresyBaseActor {
 
-    get backpack() {
-        return this.system.backpack;
+    get carryGrid() {
+        return this.system.carryGrid;
     }
 
     get skills() {
@@ -62,26 +62,26 @@ export class DarkHeresyAcolyte extends DarkHeresyBaseActor {
         return this.system.armour;
     }
 
-    get encumbrance() {
-        return this.system.encumbrance;
-    }
-
     get backgroundEffects() {
         return this.system.backgroundEffects;
     }
 
-    async prepareData() {
-        this.system.backgroundEffects = {
-            abilities: [],
-        };
+    prepareData() {
+        // backgroundEffects must be initialised before super, because _computeCharacteristics
+        // (called inside super via DarkHeresyBaseActor.prepareData) reads backgroundEffects
+        // to set has_bonus / has_negative on characteristics.
+        this.system.backgroundEffects = { abilities: [] };
         this._computeBackgroundFields();
-        this._computeCharacteristics();
+
+        // super.prepareData() → DarkHeresyBaseActor → Actor.prepareData (resets schema fields
+        // from DB source) → _computeCharacteristics (fatigue-aware, via polymorphism) → _computeMovement
+        super.prepareData();
+
+        // These all depend on correctly-computed characteristics, so run after super.
         this._computeSkills();
         this._computeExperience();
         this._computeArmour();
-        this._computeMovement();
-        this._computeEncumbrance();
-        await super.prepareData();
+        this._computeCarryGrid();
     }
 
     async rollWeaponDamage(weapon) {
@@ -421,115 +421,18 @@ export class DarkHeresyAcolyte extends DarkHeresyBaseActor {
         this.armour.rightLeg.total += this.armour.rightLeg.value;
     }
 
-    _computeEncumbrance() {
-        // Current Weight
-        let currentWeight = 0;
-
-        // Backpack
-        let backpackCurrentWeight = 0;
-        let backpackMaxWeight = 0;
-        if (this.backpack.hasBackpack) {
-            backpackMaxWeight = this.backpack.weight.max;
-            this.items.filter((item) => !item.isStorageLocation).forEach((item) => {
-                if (item.system.backpack?.inBackpack) {
-                    backpackCurrentWeight += item.totalWeight;
-                } else {
-                    currentWeight += item.totalWeight;
-                }
-            });
-
-            if (this.backpack.isCombatVest) {
-                currentWeight += backpackCurrentWeight;
-            }
-        } else {
-            // No backpack -- add everything
-            this.items.filter((item) => !item.isStorageLocation).forEach((item) => (currentWeight += item.totalWeight));
-        }
-
-        const attributeBonus = this.characteristics.strength.bonus + this.characteristics.toughness.bonus;
-        this.system.encumbrance = {
-            max: 0,
-            value: currentWeight,
-            encumbered: false,
-            backpack_max: backpackMaxWeight,
-            backpack_value: backpackCurrentWeight,
-            backpack_encumbered: false,
+    _computeCarryGrid() {
+        const strBonus = this.characteristics.strength.bonus;
+        const touBonus = this.characteristics.toughness.bonus;
+        const placedItems = this.items.filter(i => i.system.gridX != null);
+        const encumbered = placedItems.some(i => (i.system.gridX + i.system.gridWidth) > 10);
+        this.system.carryGrid = {
+            width: 15,
+            height: strBonus + touBonus,
+            strBonus,
+            touBonus,
+            encumbered,
         };
-        switch (attributeBonus) {
-            case 0:
-                this.encumbrance.max = 0.9;
-                break;
-            case 1:
-                this.encumbrance.max = 2.25;
-                break;
-            case 2:
-                this.encumbrance.max = 4.5;
-                break;
-            case 3:
-                this.encumbrance.max = 9;
-                break;
-            case 4:
-                this.encumbrance.max = 18;
-                break;
-            case 5:
-                this.encumbrance.max = 27;
-                break;
-            case 6:
-                this.encumbrance.max = 36;
-                break;
-            case 7:
-                this.encumbrance.max = 45;
-                break;
-            case 8:
-                this.encumbrance.max = 56;
-                break;
-            case 9:
-                this.encumbrance.max = 67;
-                break;
-            case 10:
-                this.encumbrance.max = 78;
-                break;
-            case 11:
-                this.encumbrance.max = 90;
-                break;
-            case 12:
-                this.encumbrance.max = 112;
-                break;
-            case 13:
-                this.encumbrance.max = 225;
-                break;
-            case 14:
-                this.encumbrance.max = 337;
-                break;
-            case 15:
-                this.encumbrance.max = 450;
-                break;
-            case 16:
-                this.encumbrance.max = 675;
-                break;
-            case 17:
-                this.encumbrance.max = 900;
-                break;
-            case 18:
-                this.encumbrance.max = 1350;
-                break;
-            case 19:
-                this.encumbrance.max = 1800;
-                break;
-            case 20:
-                this.encumbrance.max = 2250;
-                break;
-            default:
-                this.encumbrance.max = 2250;
-                break;
-        }
-
-        if (this.encumbrance.value > this.encumbrance.max) {
-            this.encumbrance.encumbered = true;
-        }
-        if (this.encumbrance.backpack_value > this.encumbrance.backpack_max) {
-            this.encumbrance.backpack_encumbered = true;
-        }
     }
 
     hasTalent(talent) {

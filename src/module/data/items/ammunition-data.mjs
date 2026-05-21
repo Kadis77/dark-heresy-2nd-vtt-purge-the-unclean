@@ -1,4 +1,4 @@
-import { physicalItemFields, itemDescriptionFields, damageFields, attackFields, actionFields, backpackItemFields } from '../common/item-fields.mjs';
+import { physicalItemFields, itemDescriptionFields, damageFields, attackFields, actionFields } from '../common/item-fields.mjs';
 
 export class AmmunitionDataModel extends foundry.abstract.TypeDataModel {
     static defineSchema() {
@@ -9,7 +9,6 @@ export class AmmunitionDataModel extends foundry.abstract.TypeDataModel {
             ...damageFields(),
             ...attackFields(),
             ...actionFields(),
-            ...backpackItemFields(),
             container: new f.BooleanField({ initial: true }),
             containerTypes: new f.ArrayField(new f.StringField(), { initial: ['attackSpecial'] }),
             weaponType: new f.StringField({ initial: '' }),

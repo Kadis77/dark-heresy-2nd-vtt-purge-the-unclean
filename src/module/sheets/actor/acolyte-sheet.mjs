@@ -10,7 +10,7 @@ export class AcolyteSheet extends ActorContainerSheet {
         classes: ['dark-heresy-2nd', 'sheet', 'actor'],
         position: { width: 1000, height: 750 },
         window: { resizable: true },
-        form: { submitOnChange: true, closeOnSubmit: false },
+        form: { closeOnSubmit: false },
     };
 
     tabGroups = { primary: 'main' };
@@ -23,11 +23,54 @@ export class AcolyteSheet extends ActorContainerSheet {
         const context = await super._prepareContext(options);
         context.dh = CONFIG.dh;
         context.effects = this.actor.effects.contents;
+
+        // Carry grid context
+        context.carryGrid = this.actor.system.carryGrid;
+
+        context.carryGridItems = [...this.actor.items]
+            .filter(i => i.system.gridX != null)
+            .map(i => ({
+                id: i.id,
+                name: i.name,
+                type: i.type,
+                gridColStart: i.system.gridX + 1,
+                gridRowStart: i.system.gridY + 1,
+                gridWidth: i.system.gridWidth,
+                gridHeight: i.system.gridHeight,
+            }));
+
+        context.unplacedItems = [...this.actor.items]
+            .filter(i => i.isPhysical && i.system.gridX == null)
+            .map(i => ({
+                id: i.id,
+                name: i.name,
+                type: i.type,
+                gridWidth: i.system.gridWidth,
+                gridHeight: i.system.gridHeight,
+            }));
+
         return context;
     }
 
     _onRender(context, options) {
         super._onRender(context, options);
+
+        // Carry grid drag/drop
+        const grid = this.element.querySelector('.dh-carry-grid');
+        if (grid) {
+            grid.addEventListener('dragover',  (ev) => this._onGridDragOver(ev));
+            grid.addEventListener('drop',      (ev) => this._onGridDrop(ev));
+            grid.addEventListener('dragleave', ()   => this._clearGridHighlight());
+        }
+        this.element.querySelectorAll('.grid-item, .unplaced-item').forEach(el => {
+            el.addEventListener('dragstart', (ev) => this._onGridItemDragStart(ev));
+            el.addEventListener('dragend',   ()   => { this._draggingItemData = null; el.classList.remove('dragging'); });
+        });
+        this.element.querySelectorAll('.grid-item').forEach(el => {
+            el.addEventListener('dblclick',    (ev) => this._onGridItemEdit(ev));
+            el.addEventListener('contextmenu', (ev) => this._onGridItemRemove(ev));
+        });
+
         this.element.querySelectorAll('.roll-characteristic').forEach(el =>
             el.addEventListener('click', async (ev) => await this._prepareRollCharacteristic(ev)));
         this.element.querySelectorAll('.roll-skill').forEach(el =>
@@ -39,6 +82,90 @@ export class AcolyteSheet extends ActorContainerSheet {
         this.element.querySelectorAll('.combat-control').forEach(el =>
             el.addEventListener('click', async (ev) => await this._combatControls(ev)));
     }
+
+    // ─── Carry Grid ─────────────────────────────────────────────────────────
+
+    _onGridItemDragStart(event) {
+        const item = this.actor.items.get(event.currentTarget.dataset.itemId);
+        if (!item) return;
+        this._draggingItemData = {
+            type: 'carry-grid-item',
+            itemId: item.id,
+            gridWidth: item.system.gridWidth,
+            gridHeight: item.system.gridHeight,
+        };
+        event.dataTransfer.setData('text/plain', JSON.stringify(this._draggingItemData));
+        event.currentTarget.classList.add('dragging');
+        event.stopPropagation();
+    }
+
+    _getGridCellFromEvent(event, grid) {
+        const rect = grid.getBoundingClientRect();
+        const cellSize = 40;
+        return {
+            x: Math.max(0, Math.floor((event.clientX - rect.left) / cellSize)),
+            y: Math.max(0, Math.floor((event.clientY - rect.top)  / cellSize)),
+        };
+    }
+
+    _checkOverlap(movingItemId, x, y, w, h) {
+        const { width, height } = this.actor.system.carryGrid;
+        if (x < 0 || y < 0 || x + w > width || y + h > height) return true;
+        for (const item of this.actor.items) {
+            if (item.id === movingItemId || item.system.gridX == null) continue;
+            const ox = item.system.gridX, oy = item.system.gridY;
+            const ow = item.system.gridWidth, oh = item.system.gridHeight;
+            if (x < ox + ow && x + w > ox && y < oy + oh && y + h > oy) return true;
+        }
+        return false;
+    }
+
+    _onGridDragOver(event) {
+        event.preventDefault();
+        const data = this._draggingItemData;
+        if (!data || data.type !== 'carry-grid-item') return;
+        const grid = this.element.querySelector('.dh-carry-grid');
+        const { x, y } = this._getGridCellFromEvent(event, grid);
+        const valid = !this._checkOverlap(data.itemId, x, y, data.gridWidth, data.gridHeight);
+        grid.classList.toggle('drag-over-valid',   valid);
+        grid.classList.toggle('drag-over-invalid', !valid);
+    }
+
+    async _onGridDrop(event) {
+        event.preventDefault();
+        const grid = this.element.querySelector('.dh-carry-grid');
+        this._clearGridHighlight();
+        let data;
+        try { data = JSON.parse(event.dataTransfer.getData('text/plain')); } catch { return; }
+        if (data.type !== 'carry-grid-item') return super._onDrop(event);
+        const { x, y } = this._getGridCellFromEvent(event, grid);
+        if (this._checkOverlap(data.itemId, x, y, data.gridWidth, data.gridHeight)) {
+            ui.notifications.warn('Item does not fit there.');
+            return;
+        }
+        const item = this.actor.items.get(data.itemId);
+        if (item) await item.update({ 'system.gridX': x, 'system.gridY': y });
+    }
+
+    _clearGridHighlight() {
+        const grid = this.element.querySelector('.dh-carry-grid');
+        if (grid) grid.classList.remove('drag-over-valid', 'drag-over-invalid');
+    }
+
+    _onGridItemEdit(event) {
+        event.stopPropagation();
+        const item = this.actor.items.get(event.currentTarget.dataset.itemId);
+        if (item) item.sheet.render(true);
+    }
+
+    async _onGridItemRemove(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const item = this.actor.items.get(event.currentTarget.dataset.itemId);
+        if (item) await item.update({ 'system.gridX': null, 'system.gridY': null });
+    }
+
+    // ────────────────────────────────────────────────────────────────────────
 
     async _combatControls(event) {
         switch (event.currentTarget.dataset.action) {
