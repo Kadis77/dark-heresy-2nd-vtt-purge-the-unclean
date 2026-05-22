@@ -90,6 +90,72 @@ $cell-size: 40px;
     &.drag-over-invalid { outline: 2px solid #cc0000; }
 }
 
+.dh-stash-panel {
+    display: flex;
+    flex-direction: column;
+
+    .dh-stash-dropzone {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        padding: 4px;
+        min-height: 60px;
+        border: 2px dashed transparent;
+        border-radius: 3px;
+        transition: border-color 0.1s;
+
+        &.drag-over-valid {
+            border-color: #00cc44;
+            background: rgba(0, 204, 68, 0.05);
+        }
+    }
+
+    .stash-item {
+        display: flex;
+        align-items: center;
+        padding: 4px 6px;
+        border-radius: 2px;
+        font-size: 10px;
+        cursor: grab;
+        user-select: none;
+        color: #fff;
+        overflow: hidden;
+
+        &:hover { filter: brightness(1.15); }
+        &:active { cursor: grabbing; }
+        &.dragging { opacity: 0.35; }
+
+        &--weapon          { background: rgba(#8b1a1a, 0.85); }
+        &--armour          { background: rgba(#1a3a8b, 0.85); }
+        &--ammunition      { background: rgba(#7a5500, 0.85); }
+        &--cybernetic      { background: rgba(#5a1a8b, 0.85); }
+        &--forceField      { background: rgba(#1a6a7a, 0.85); }
+        &--armourModification,
+        &--weaponModification { background: rgba(#3a3a3a, 0.75); }
+        &--gear,
+        &--consumable,
+        &--drug,
+        &--tool            { background: rgba(#1a6a1a, 0.85); }
+
+        &__name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    .stash-item--empty {
+        color: #999;
+        font-style: italic;
+        font-size: 10px;
+        text-align: center;
+        padding: 8px 4px;
+    }
+}
+
 .dh-carry-grid-unplaced {
     margin-top: 6px;
     border-top: 1px solid #ccc;

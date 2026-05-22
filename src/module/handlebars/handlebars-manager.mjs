@@ -18,6 +18,7 @@ export class HandlebarManager {
             'systems/dark-heresy-2nd/templates/actor/panel/armour-panel.hbs',
             'systems/dark-heresy-2nd/templates/actor/panel/bonuses-panel.hbs',
             'systems/dark-heresy-2nd/templates/actor/panel/carry-grid-panel.hbs',
+            'systems/dark-heresy-2nd/templates/actor/panel/stash-panel.hbs',
             'systems/dark-heresy-2nd/templates/actor/panel/characteristic-panel.hbs',
             'systems/dark-heresy-2nd/templates/actor/panel/characteristic-roller-panel.hbs',
             'systems/dark-heresy-2nd/templates/actor/panel/combat-controls-panel.hbs',

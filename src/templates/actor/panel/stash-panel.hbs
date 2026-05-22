@@ -1,0 +1,15 @@
+<div class="dh-panel dh-stash-panel dh-grid-col-2 dh-grid-row-4">
+    <h1 class="dh-panel__header">Not Carried</h1>
+    <div class="dh-stash-dropzone">
+        {{#each stashedItems}}
+            <div class="stash-item stash-item--{{this.type}}"
+                 data-item-id="{{this.id}}"
+                 draggable="true"
+                 title="{{this.name}} — drag to carry grid to equip; right-click to move to unplaced">
+                <span class="stash-item__name">{{this.name}}</span>
+            </div>
+        {{else}}
+            <p class="stash-item--empty">Drop items here to stash them.</p>
+        {{/each}}
+    </div>
+</div>

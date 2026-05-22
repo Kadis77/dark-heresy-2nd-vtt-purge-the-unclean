@@ -13,6 +13,7 @@ export function physicalItemFields() {
         gridHeight: new f.NumberField({ initial: 1, integer: true }),
         gridX: new f.NumberField({ initial: null, integer: true, nullable: true }),
         gridY: new f.NumberField({ initial: null, integer: true, nullable: true }),
+        stashed: new f.BooleanField({ initial: false }),
         isNaturallyCovert: new f.BooleanField({ initial: false }),
     };
 }

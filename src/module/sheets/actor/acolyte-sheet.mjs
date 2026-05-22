@@ -4,6 +4,7 @@ import { DHTargetedActionManager } from '../../actions/targeted-action-manager.m
 import { Hit } from '../../rolls/damage-data.mjs';
 import { AssignDamageData } from '../../rolls/assign-damage-data.mjs';
 import { prepareAssignDamageRoll } from '../../prompts/assign-damage-prompt.mjs';
+import { categorizeCarryItems, stashUpdateData, gridPlaceUpdateData, unstashUpdateData } from '../../carry-grid-helpers.mjs';
 
 export class AcolyteSheet extends ActorContainerSheet {
     static DEFAULT_OPTIONS = {
@@ -27,27 +28,10 @@ export class AcolyteSheet extends ActorContainerSheet {
         // Carry grid context
         context.carryGrid = this.actor.system.carryGrid;
 
-        context.carryGridItems = [...this.actor.items]
-            .filter(i => i.system.gridX != null)
-            .map(i => ({
-                id: i.id,
-                name: i.name,
-                type: i.type,
-                gridColStart: i.system.gridX + 1,
-                gridRowStart: i.system.gridY + 1,
-                gridWidth: i.system.gridWidth,
-                gridHeight: i.system.gridHeight,
-            }));
-
-        context.unplacedItems = [...this.actor.items]
-            .filter(i => i.isPhysical && i.system.gridX == null)
-            .map(i => ({
-                id: i.id,
-                name: i.name,
-                type: i.type,
-                gridWidth: i.system.gridWidth,
-                gridHeight: i.system.gridHeight,
-            }));
+        const { carryGridItems, unplacedItems, stashedItems } = categorizeCarryItems([...this.actor.items]);
+        context.carryGridItems = carryGridItems;
+        context.unplacedItems = unplacedItems;
+        context.stashedItems = stashedItems;
 
         return context;
     }
@@ -62,7 +46,7 @@ export class AcolyteSheet extends ActorContainerSheet {
             grid.addEventListener('drop',      (ev) => this._onGridDrop(ev));
             grid.addEventListener('dragleave', ()   => this._clearGridHighlight());
         }
-        this.element.querySelectorAll('.grid-item, .unplaced-item').forEach(el => {
+        this.element.querySelectorAll('.grid-item, .unplaced-item, .stash-item').forEach(el => {
             el.addEventListener('dragstart', (ev) => this._onGridItemDragStart(ev));
             el.addEventListener('dragend',   ()   => { this._draggingItemData = null; el.classList.remove('dragging'); });
         });
@@ -70,6 +54,17 @@ export class AcolyteSheet extends ActorContainerSheet {
             el.addEventListener('dblclick',    (ev) => this._onGridItemEdit(ev));
             el.addEventListener('contextmenu', (ev) => this._onGridItemRemove(ev));
         });
+        this.element.querySelectorAll('.stash-item').forEach(el => {
+            el.addEventListener('dblclick',    (ev) => this._onGridItemEdit(ev));
+            el.addEventListener('contextmenu', (ev) => this._onStashItemUnstash(ev));
+        });
+
+        const stashZone = this.element.querySelector('.dh-stash-dropzone');
+        if (stashZone) {
+            stashZone.addEventListener('dragover',  (ev) => this._onStashDragOver(ev));
+            stashZone.addEventListener('drop',      (ev) => this._onStashDrop(ev));
+            stashZone.addEventListener('dragleave', ()   => this._clearStashHighlight());
+        }
 
         this.element.querySelectorAll('.roll-characteristic').forEach(el =>
             el.addEventListener('click', async (ev) => await this._prepareRollCharacteristic(ev)));
@@ -144,13 +139,45 @@ export class AcolyteSheet extends ActorContainerSheet {
             return;
         }
         const item = this.actor.items.get(data.itemId);
-        if (item) await item.update({ 'system.gridX': x, 'system.gridY': y });
+        if (item) await item.update(gridPlaceUpdateData(x, y));
     }
 
     _clearGridHighlight() {
         const grid = this.element.querySelector('.dh-carry-grid');
         if (grid) grid.classList.remove('drag-over-valid', 'drag-over-invalid');
     }
+
+    // ─── Stash ───────────────────────────────────────────────────────────────
+
+    _onStashDragOver(event) {
+        event.preventDefault();
+        if (!this._draggingItemData || this._draggingItemData.type !== 'carry-grid-item') return;
+        event.currentTarget.classList.add('drag-over-valid');
+    }
+
+    _clearStashHighlight() {
+        const zone = this.element.querySelector('.dh-stash-dropzone');
+        if (zone) zone.classList.remove('drag-over-valid');
+    }
+
+    async _onStashDrop(event) {
+        event.preventDefault();
+        this._clearStashHighlight();
+        let data;
+        try { data = JSON.parse(event.dataTransfer.getData('text/plain')); } catch { return; }
+        if (data.type !== 'carry-grid-item') return;
+        const item = this.actor.items.get(data.itemId);
+        if (item) await item.update(stashUpdateData());
+    }
+
+    async _onStashItemUnstash(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const item = this.actor.items.get(event.currentTarget.dataset.itemId);
+        if (item) await item.update(unstashUpdateData());
+    }
+
+    // ────────────────────────────────────────────────────────────────────────
 
     _onGridItemEdit(event) {
         event.stopPropagation();
