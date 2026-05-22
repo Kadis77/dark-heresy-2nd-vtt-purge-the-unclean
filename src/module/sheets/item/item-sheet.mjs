@@ -5,6 +5,7 @@ import { toggleUIExpanded } from '../../rules/config.mjs';
  */
 export class DarkHeresyItemSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ItemSheetV2) {
     static DEFAULT_OPTIONS = {
+        classes: ['dark-heresy-2nd', 'sheet', 'item'],
         position: { width: 650, height: 500 },
         window: { resizable: true },
         form: { closeOnSubmit: false },
