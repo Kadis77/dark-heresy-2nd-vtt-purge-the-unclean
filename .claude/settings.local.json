@@ -1,13 +1,16 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:foundryvtt.com)",
-      "WebFetch(domain:raw.githubusercontent.com)",
-      "WebSearch",
+      "Bash(npx gulp:*)",
+      "Bash(sed -n '6924,6940p' \"/Applications/Foundry Virtual Tabletop.app/Contents/Resources/app/public/css/foundry2.css\")",
+      "Bash(sed -n '6143,6165p' \"/Applications/Foundry Virtual Tabletop.app/Contents/Resources/app/public/css/foundry2.css\")",
+      "Bash(awk -F: '{if \\($1 > 11000 && $1 < 15000\\) print}')",
       "WebFetch(domain:github.com)",
-      "WebFetch(domain:foundryvtt.wiki)",
-      "Bash(grep:*)",
-      "Bash(npx gulp:*)"
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(awk -F: '{if \\($1 < 7000\\) print}')",
+      "Bash(awk -F: '{if \\($1 < 9100 && $1 > 6000\\) print}')",
+      "Bash(awk -F: '{if \\($1 > 6089 && $1 < 12000\\) print}')"
     ]
   }
 }

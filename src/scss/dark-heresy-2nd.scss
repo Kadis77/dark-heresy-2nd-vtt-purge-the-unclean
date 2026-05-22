@@ -1,6 +1,42 @@
 @import url('https://fonts.googleapis.com/css?family=IM+Fell+DW+Pica:400|Lusitana:400:700&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
+// ===== Foundry v14 Sidebar Compatibility =====
+// Unlayered CSS — takes priority over Foundry's @layer applications rules.
+//
+// Problem 1: v14 sidebar panels are .application (not .app), so Foundry's
+// own hiding rule (body.game .app.tab:not(.active)) doesn't fire — all panels
+// render simultaneously and split the available height.
+//
+// Problem 2: .application { position: absolute; max-height: calc(100vh - ...) }
+// removes panels from the flex flow of #sidebar-content, so flex:1 has no effect
+// and panels are only as tall as their content.
+
+#sidebar-content .application.sidebar-tab:not(.active) {
+    display: none;
+}
+
+#sidebar-content .application.sidebar-tab {
+    position: relative;
+    max-height: 100%;
+    z-index: auto;
+}
+
+#sidebar-content .application.sidebar-tab.active {
+    flex: 1;
+    min-height: 0;
+}
+
+// Reinforce icon column layout — Foundry sets this in a layer; unlayered wins.
+#sidebar-tabs > menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+// ===== End Sidebar Fixes =====
+
+// Global Material Icons helper — also used in dialogs that don't have .dark-heresy-2nd
 .dh-material {
     font-family: 'Material Icons';
     font-weight: normal;
@@ -17,10 +53,14 @@
     -webkit-font-smoothing: antialiased;
 }
 
-.dh-wrapper {
-    position: relative;
-    height: 100%;
+.dark-heresy-2nd {
     color: #000;
+
+    // Inner sheet wrapper — fills window-content and provides a positioning context.
+    .dh-sheet {
+        position: relative;
+        height: 100%;
+    }
 
     @import 'reset';
     @import 'abstracts';
